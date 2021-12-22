@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Montserrat, sans-serif;
+  background-color: white !important;
+}
+
+a {
+  color: #1976d2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.formLabel label {
+  text-transform: uppercase;
+  color: #1286c7;
+}
+
+.formLabel input {
+  font-weight: 600;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.bordered {
+  border: 1px solid #000000 !important;
+}
+
+.react-tel-input .form-control.invalid-number,
+.react-tel-input .form-control.invalid-number:focus {
+  background-color: #fff4c2 !important;
+}
+
+.sketch-picker {
+  position: absolute;
+  z-index: 10;
+}
