@@ -23,7 +23,7 @@ const NavDrawer = (): JSX.Element => {
     },
     {
       text: 'Email Templates Manager',
-      path: '/mail-sender'
+      path: '/email-manager'
     }
   ];
 
@@ -48,12 +48,12 @@ const NavDrawer = (): JSX.Element => {
       <Divider />
       <List>
         {menuArr.map((item) => (
-          <>
+          <span key={item.text}>
             <ListItem button key={item.text} onClick={() => listItemClick(item.path)}>
               <ListItemText primary={item.text} />
             </ListItem>
             <Divider sx={{ width: '100%' }} />
-          </>
+          </span>
         ))}
       </List>
     </Drawer>
