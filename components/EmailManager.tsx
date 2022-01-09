@@ -3,39 +3,59 @@ import { useEffect, useState, useRef } from 'react';
 import { request } from '../helpers/restClient';
 import { IEmailObject } from '../ts/interfaces';
 import TextEditor from './TextEditor';
+import AddTemplateDialog from './email-manager/AddTemplateDialog';
+import useSnackbar from '../snackbar/useSnackbar';
 
 const EmailManager = (): JSX.Element => {
   const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
   const [content, setContent] = useState<string>('');
   const [chosenEmail, setChosenEmail] = useState<IEmailObject | string>('');
   const [readyToEdit, setReadyToEdit] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const snackbar = useSnackbar();
 
   const getAllTemplates = async () => {
-    const { data } = await request('get', '/getEmailTemplates');
-    setEmailTemplates(data);
+    try {
+      const { data } = await request('get', '/getEmailTemplates');
+      setEmailTemplates(data);
+    } catch (error) {
+      snackbar.showMessage('Not able to get emails list. GTry one more time', 'error');
+      return;
+    }
   };
 
   const onSelectChange = (event: any) => {
     setChosenEmail(event?.target?.value);
   };
 
-  const saveTemplate = () => {
-    return;
-  };
+  const saveTemplate = async () => {
+    console.log(11111);
 
-  const addNewTemplate = () => {
-    return;
-  };
+    if (!content) {
+      snackbar.showMessage('Please provide  content', 'warning');
+      return;
+    }
+    try {
+      const data = await request('post', '/updateEmailTemplate', {
+        id: (chosenEmail as IEmailObject).unique_id,
+        data: { content: JSON.stringify(content) }
+      });
+      snackbar.showMessage('New template is successfully updated!', 'success');
+      setReadyToEdit(false);
+      setContent('');
+      setChosenEmail('');
+      getAllTemplates();
+    } catch (error) {
+      console.log(error);
 
-  const htmlDecode = (str: string): string => {
-    var txt = document.createElement('textarea');
-    txt.innerHTML = str;
-    return txt.value;
+      snackbar.showMessage('Something went wrong with updating email template', 'error');
+      return;
+    }
   };
 
   useEffect(() => {
     if (!chosenEmail) return;
-    setContent(htmlDecode((chosenEmail as IEmailObject).content));
+    setContent(JSON.parse((chosenEmail as IEmailObject).content));
     setReadyToEdit(true);
   }, [chosenEmail]);
 
@@ -64,19 +84,21 @@ const EmailManager = (): JSX.Element => {
             Save
           </Button>
         </Grid>
-        <Grid item xs={5} textAlign="right" onClick={addNewTemplate}>
-          <Button variant="outlined">Add New Template</Button>
+        <Grid item xs={5} textAlign="right">
+          <Button variant="outlined" onClick={() => setOpenDialog(true)}>
+            Add New Template
+          </Button>
         </Grid>
       </Grid>
+      {readyToEdit && <TextEditor parentContent={content} changeParentContent={setContent} />}
 
-      <Grid container item alignItems="flex-start" p={4}>
-        <Grid item xs={6}>
-          {readyToEdit && <TextEditor parentContent={content} changeParentContent={setContent} />}
-        </Grid>
-        <Grid item xs={6} pl={4}>
-          <div dangerouslySetInnerHTML={{ __html: content }} />
-        </Grid>
-      </Grid>
+      {openDialog && (
+        <AddTemplateDialog
+          openDialog={openDialog}
+          closeDialog={() => setOpenDialog(false)}
+          onTemplateAdded={getAllTemplates}
+        />
+      )}
     </Grid>
   );
 };

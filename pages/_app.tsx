@@ -6,6 +6,8 @@ import theme from '../src/styles/theme';
 import '../src/styles/globals.css';
 import MainLayout from '../components/MainLayout';
 import { Theme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import SnackbarProvider from '../snackbar/snackbarState';
+import CustomSnackbar from '../snackbar/CustomSnackbar';
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   React.useEffect(() => {
@@ -21,12 +23,15 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme} {...pageProps}>
-          <CssBaseline />
-          <MainLayout {...pageProps}>
-            <Component {...pageProps} />
-          </MainLayout>
-        </ThemeProvider>
+        <SnackbarProvider>
+          <ThemeProvider theme={theme} {...pageProps}>
+            <CssBaseline />
+            <MainLayout {...pageProps}>
+              <Component {...pageProps} />
+            </MainLayout>
+            <CustomSnackbar />
+          </ThemeProvider>
+        </SnackbarProvider>
       </StyledEngineProvider>
     </>
   );
