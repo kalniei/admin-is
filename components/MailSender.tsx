@@ -37,11 +37,12 @@ const MailSender = (): JSX.Element => {
 
   const sendEmail = async () => {
     if (!content || !title) {
-      snackbar.showMessage('Please provide content and title', 'warning');
+      snackbar.showMessage('Please provide content and subject', 'warning');
       return;
     }
     try {
       await request('post', '/sendEmail', {
+        to: ['olga.kalniei@gmail.com'],
         subject: title,
         content: content
       });
