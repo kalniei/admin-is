@@ -19,7 +19,7 @@ const EmailManager = (): JSX.Element => {
       const { data } = await request('get', '/getEmailTemplates');
       setEmailTemplates(data);
     } catch (error) {
-      snackbar.showMessage('Not able to get emails list. GTry one more time', 'error');
+      snackbar.showMessage('Not able to get emails list. Try one more time', 'error');
       return;
     }
   };
@@ -29,8 +29,6 @@ const EmailManager = (): JSX.Element => {
   };
 
   const saveTemplate = async () => {
-    console.log(11111);
-
     if (!content) {
       snackbar.showMessage('Please provide  content', 'warning');
       return;
