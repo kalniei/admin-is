@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
 import { IEmailObject } from '../../ts/interfaces';
-import TextEditor from '../TextEditor';
+import TextEditor from '../email-manager/TextEditor';
 
 const EmailSender = (): JSX.Element => {
   return <></>;

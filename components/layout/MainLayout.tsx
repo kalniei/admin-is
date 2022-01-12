@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/dist/client/router';
-import formatPathname from '../helpers/formatPathname';
-import IPage from '../ts/interfaces';
+import formatPathname from '../../helpers/formatPathname';
+import IPage from '../../ts/interfaces';
 import NavDrawer from './NavDrawer';
 
 const drawerWidth = 250;
@@ -17,7 +17,7 @@ const MainLayout = ({ children }: IPage): JSX.Element => {
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h5" noWrap component="div">
             {router.pathname !== '/' ? formatPathname(router.pathname) : 'Home Page'}
           </Typography>
         </Toolbar>

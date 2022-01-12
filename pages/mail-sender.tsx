@@ -1,4 +1,4 @@
-import MailSender from '../components/MailSender';
+import MailSender from '../components/email-sender/MailSender';
 
 const MailSenderPage = (): JSX.Element => {
   return <MailSender />;

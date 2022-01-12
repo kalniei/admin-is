@@ -1,16 +1,15 @@
 import { Grid, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
 import { useEffect, useState, useRef } from 'react';
-import { request } from '../helpers/restClient';
-import { IEmailObject } from '../ts/interfaces';
+import { request } from '../../helpers/restClient';
+import { IEmailObject } from '../../ts/interfaces';
 import TextEditor from './TextEditor';
-import AddTemplateDialog from './email-manager/AddTemplateDialog';
-import useSnackbar from '../snackbar/useSnackbar';
+import AddTemplateDialog from './AddTemplateDialog';
+import useSnackbar from '../../snackbar/useSnackbar';
 
 const EmailManager = (): JSX.Element => {
   const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
   const [content, setContent] = useState<string>('');
   const [chosenEmail, setChosenEmail] = useState<IEmailObject | string>('');
-  const [readyToEdit, setReadyToEdit] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const snackbar = useSnackbar();
 
@@ -39,7 +38,6 @@ const EmailManager = (): JSX.Element => {
         data: { content: JSON.stringify(content) }
       });
       snackbar.showMessage('New template is successfully updated!', 'success');
-      setReadyToEdit(false);
       setContent('');
       setChosenEmail('');
       getAllTemplates();
@@ -54,7 +52,6 @@ const EmailManager = (): JSX.Element => {
   useEffect(() => {
     if (!chosenEmail) return;
     setContent(JSON.parse((chosenEmail as IEmailObject).content));
-    setReadyToEdit(true);
   }, [chosenEmail]);
 
   useEffect(() => {
@@ -88,7 +85,7 @@ const EmailManager = (): JSX.Element => {
           </Button>
         </Grid>
       </Grid>
-      {readyToEdit && <TextEditor parentContent={content} changeParentContent={setContent} />}
+      {content && <TextEditor parentContent={content} changeParentContent={setContent} />}
 
       {openDialog && (
         <AddTemplateDialog

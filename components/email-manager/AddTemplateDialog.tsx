@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { request } from '../../helpers/restClient';
-import TextEditor from '../TextEditor';
+import TextEditor from './TextEditor';
 import useSnackbar from '../../snackbar/useSnackbar';
 
 interface PageProps {

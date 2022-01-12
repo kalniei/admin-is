@@ -10,6 +10,10 @@ const NavDrawer = (): JSX.Element => {
       path: '/'
     },
     {
+      text: 'Tabels Manager',
+      path: '/tables-manager'
+    },
+    {
       text: 'Send Emails',
       path: '/mail-sender'
     },

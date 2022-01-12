@@ -1,4 +1,4 @@
-import EmailManager from '../components/EmailManager';
+import EmailManager from '../components/email-manager/EmailManager';
 
 const MailSenderPage = (): JSX.Element => {
   return <EmailManager />;

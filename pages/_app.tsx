@@ -4,7 +4,7 @@ import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../src/styles/theme';
 import '../src/styles/globals.css';
-import MainLayout from '../components/MainLayout';
+import MainLayout from '../components/layout/MainLayout';
 import { Theme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import SnackbarProvider from '../snackbar/snackbarState';
 import CustomSnackbar from '../snackbar/CustomSnackbar';
