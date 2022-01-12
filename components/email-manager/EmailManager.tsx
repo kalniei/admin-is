@@ -1,5 +1,5 @@
-import { Grid, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
-import { useEffect, useState, useRef } from 'react';
+import { Grid, Button, Autocomplete, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import { IEmailObject } from '../../ts/interfaces';
 import TextEditor from './TextEditor';
@@ -9,7 +9,7 @@ import useSnackbar from '../../snackbar/useSnackbar';
 const EmailManager = (): JSX.Element => {
   const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
   const [content, setContent] = useState<string>('');
-  const [chosenEmail, setChosenEmail] = useState<IEmailObject | string>('');
+  const [chosenEmail, setChosenEmail] = useState<IEmailObject | null>(null);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const snackbar = useSnackbar();
 
@@ -23,8 +23,8 @@ const EmailManager = (): JSX.Element => {
     }
   };
 
-  const onSelectChange = (event: any) => {
-    setChosenEmail(event?.target?.value);
+  const onSelectChange = (event: any, value: IEmailObject | null) => {
+    setChosenEmail(value);
   };
 
   const saveTemplate = async () => {
@@ -39,7 +39,7 @@ const EmailManager = (): JSX.Element => {
       });
       snackbar.showMessage('New template is successfully updated!', 'success');
       setContent('');
-      setChosenEmail('');
+      setChosenEmail(null);
       getAllTemplates();
     } catch (error) {
       console.log(error);
@@ -50,7 +50,10 @@ const EmailManager = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!chosenEmail) return;
+    if (!chosenEmail) {
+      setContent('');
+      return;
+    }
     setContent(JSON.parse((chosenEmail as IEmailObject).content));
   }, [chosenEmail]);
 
@@ -62,17 +65,15 @@ const EmailManager = (): JSX.Element => {
     <Grid container>
       <Grid container item alignItems="flex-end" justifyContent="space-between" p={4}>
         <Grid item xs={6}>
-          <FormControl fullWidth variant="standard">
-            <InputLabel>Choose email template</InputLabel>
-            <Select value={chosenEmail} label="email" onChange={onSelectChange}>
-              {emailTemplates.map((template) => (
-                //@ts-ignore - necessary to load object into value
-                <MenuItem key={template.unique_id} value={template}>
-                  {template.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Autocomplete
+            value={chosenEmail}
+            onChange={onSelectChange}
+            options={emailTemplates}
+            getOptionLabel={(option: IEmailObject) => option.title}
+            renderInput={(params) => (
+              <TextField {...params} variant="standard" label="Choose email template" fullWidth />
+            )}
+          />
         </Grid>
         <Grid item xs={1} pl={4}>
           <Button variant="outlined" onClick={saveTemplate}>
