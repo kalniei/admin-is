@@ -7,7 +7,7 @@ export interface IEmailObject {
   title: string;
 }
 export interface IWorkshopTableObject {
-  'L.P': number;
+  id: number;
   date: string;
   level: '1' | '2' | '3' | '4';
   mail: string;

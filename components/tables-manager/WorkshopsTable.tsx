@@ -1,27 +1,24 @@
-import {
-  Autocomplete,
-  CardContent,
-  Grid,
-  Button,
-  Typography,
-  Divider,
-  TextField
-} from '@mui/material';
+import { Grid, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
 import { IWorkshopTableObject } from '../../ts/interfaces';
 import moment from 'moment-mini-ts';
-
+import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
 
 interface PageProps {
   tableInfo: IWorkshopTableObject[];
+  setParentSelected: (val: IWorkshopTableObject[]) => void;
 }
 
-const WorkshopsTable = ({ tableInfo }: PageProps): JSX.Element => {
+const WorkshopsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Element => {
+  const [chosenEmail, setChosenEmail] = useState<string>('');
+  const [pageSize, setPageSize] = useState<number>(5);
+  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+
   const columns: GridColDef[] = [
-    { field: 'L.P', headerName: 'id', flex: 0.2 },
+    { field: 'id', headerName: 'id', flex: 0.2 },
     { field: 'name', headerName: 'First Name', flex: 1 },
     { field: 'surname', headerName: 'Last Name', flex: 1 },
     { field: 'mail', headerName: 'Email', flex: 2 },
@@ -38,26 +35,44 @@ const WorkshopsTable = ({ tableInfo }: PageProps): JSX.Element => {
     },
     { field: 'level', headerName: 'Level', flex: 0.2 },
     { field: 'notes', headerName: 'Notes', flex: 1 },
-    { field: 'paid', headerName: 'Paid', flex: 0.2 }
+    { field: 'paid', headerName: 'Paid', flex: 0.2 },
+    {
+      field: 'edit',
+      flex: 0.5,
+      headerName: 'Edit',
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setChosenEmail(String(params.id));
+          }}
+        >
+          <EditIcon />
+        </Button>
+      )
+    }
   ];
-  const [pageSize, setPageSize] = useState<number>(5);
-  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    console.log(selectionModel);
+    const tempArr = tableInfo.filter((x: any) => selectionModel.includes(x['id']));
+    setParentSelected(tempArr);
   }, [selectionModel]);
+
   return (
     <Grid>
       <DataGrid
         autoHeight={true}
         rows={tableInfo}
         columns={columns}
-        getRowId={(row) => row['L.P']}
+        getRowId={(row) => row['id']}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20, 100, 1000]}
         pagination
         checkboxSelection
+        disableSelectionOnClick
         onSelectionModelChange={(newSelectionModel) => {
           setSelectionModel(newSelectionModel);
         }}
