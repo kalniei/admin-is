@@ -13,26 +13,64 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import Colors from '../../helpers/Colors';
+import getErrorMessage from '../../helpers/getErrorMessage';
+import { request } from '../../helpers/restClient';
+import useSnackbar from '../../snackbar/useSnackbar';
+import { IWorkshopTableObject } from '../../ts/interfaces';
 
 interface PageProps {
   handleClose: () => void;
   open: boolean;
-  onConfirm: (val: string | null, checked: boolean) => void;
-  isProcessing: boolean;
+  onConfirm: () => void;
   workshpsArr: string[];
+  selected: IWorkshopTableObject[];
+  tableFrom: string | null;
 }
 const TransferModal = ({
   handleClose,
   open,
   onConfirm,
-  isProcessing,
-  workshpsArr
+  workshpsArr,
+  selected,
+  tableFrom
 }: PageProps): JSX.Element => {
   const [chosenWorkshop, setChosenWorkshop] = useState<string | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
+  const snackbar = useSnackbar();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
+  };
+
+  const transferChosenRows = async (tableTo: string | null, checked: boolean) => {
+    if (!tableFrom || !tableTo || selected.length === 0) return;
+    setIsProcessing(true);
+    try {
+      const { data } = await request(
+        'post',
+        `${
+          checked ? '/transferAndDeleteToGlobalWorkshopsTable' : '/transferToGlobalWorkshopsTable'
+        }`,
+        {
+          table_name_from: tableFrom,
+          table_name_to: tableTo,
+          row_object: selected
+        }
+      );
+      snackbar.showMessage('transfered records: ' + data?.affectedRows, 'success');
+      onConfirm();
+      handleClose();
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Something went wrong transfering rows'),
+        'error'
+      );
+      return;
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -79,7 +117,7 @@ const TransferModal = ({
         </Button>
         <Button
           variant="outlined"
-          onClick={() => onConfirm(chosenWorkshop, checked)}
+          onClick={() => transferChosenRows(chosenWorkshop, checked)}
           disabled={!chosenWorkshop || isProcessing}
           color="success"
         >

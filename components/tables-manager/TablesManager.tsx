@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  Grid,
-  Button,
-  TextField,
-  LinearProgress,
-  CircularProgress
-} from '@mui/material';
+import { Autocomplete, Grid, Button, TextField, LinearProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
@@ -16,17 +9,21 @@ import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStati
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal';
 import TransferModal from './TransferModal';
 import getErrorMessage from '../../helpers/getErrorMessage';
+import AddNewModal from './AddNewModal';
 
 const TablesManager = (): JSX.Element => {
   const [workshpsArr, setWorkshopsArr] = useState<string[]>([]);
   const [tableInfo, setTableInfo] = useState<IWorkshopTableObject[]>([]);
   const [chosenWorkshop, setChosenWorkshop] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const snackbar = useSnackbar();
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [selected, setSelected] = useState<IWorkshopTableObject[]>([]);
+
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [openTransferDialog, setOpenTransferDialog] = useState<boolean>(false);
+  const [openAddNewDialog, setOpenAddNewDialog] = useState<boolean>(false);
+
+  const snackbar = useSnackbar();
 
   const getAllWorkshops = async () => {
     try {
@@ -62,7 +59,7 @@ const TablesManager = (): JSX.Element => {
   };
 
   const deleteChosenRows = async () => {
-    setIsProcessing(true);
+    setIsDeleting(true);
     try {
       const { data } = await request('post', '/deleteRowsFromTable', {
         table_name: chosenWorkshop,
@@ -75,36 +72,12 @@ const TablesManager = (): JSX.Element => {
       snackbar.showMessage(getErrorMessage(error, 'Something went wrong deleting rows'), 'error');
       return;
     } finally {
-      setIsProcessing(false);
+      setIsDeleting(false);
     }
   };
 
-  const transferChosenRows = async (table_name_to: string | null, checked: boolean) => {
-    setIsProcessing(true);
-    try {
-      const { data } = await request(
-        'post',
-        `${
-          checked ? '/transferAndDeleteToGlobalWorkshopsTable' : '/transferToGlobalWorkshopsTable'
-        }`,
-        {
-          table_name_from: chosenWorkshop,
-          table_name_to: table_name_to,
-          row_object: selected
-        }
-      );
-      snackbar.showMessage('transfered records: ' + data?.affectedRows, 'success');
-      getChosenWorkshop(chosenWorkshop as string);
-      setOpenTransferDialog(false);
-    } catch (error: any) {
-      snackbar.showMessage(
-        getErrorMessage(error, 'Something went wrong transfering rows'),
-        'error'
-      );
-      return;
-    } finally {
-      setIsProcessing(false);
-    }
+  const reloadWorkshops = () => {
+    getChosenWorkshop(chosenWorkshop as string);
   };
 
   useEffect(() => {
@@ -138,10 +111,20 @@ const TablesManager = (): JSX.Element => {
       <Grid item xs={6}>
         <Button
           sx={{ ml: 2 }}
+          onClick={() => setOpenAddNewDialog(true)}
+          variant="outlined"
+          disabled={!chosenWorkshop}
+          color="success"
+        >
+          <TransferWithinAStationIcon sx={{ mr: 1 }} />
+          Add New
+        </Button>
+        <Button
+          sx={{ ml: 2 }}
           onClick={() => setOpenTransferDialog(true)}
           variant="outlined"
           disabled={!chosenWorkshop || selected.length === 0}
-          color="success"
+          color="primary"
         >
           <TransferWithinAStationIcon sx={{ mr: 1 }} />
           Transfer
@@ -170,9 +153,19 @@ const TablesManager = (): JSX.Element => {
         <TransferModal
           open={openTransferDialog}
           handleClose={() => setOpenTransferDialog(false)}
-          onConfirm={transferChosenRows}
-          isProcessing={isProcessing}
+          onConfirm={reloadWorkshops}
           workshpsArr={workshpsArr}
+          tableFrom={chosenWorkshop}
+          selected={selected}
+        />
+      )}
+
+      {openAddNewDialog && (
+        <AddNewModal
+          open={openAddNewDialog}
+          handleClose={() => setOpenAddNewDialog(false)}
+          onConfirm={reloadWorkshops}
+          tableFrom={chosenWorkshop}
         />
       )}
 
@@ -181,7 +174,7 @@ const TablesManager = (): JSX.Element => {
           open={openAlertDialog}
           handleClose={() => setOpenAlertDialog(false)}
           onConfirm={deleteChosenRows}
-          isDeleting={isProcessing}
+          isDeleting={isDeleting}
         />
       )}
     </Grid>

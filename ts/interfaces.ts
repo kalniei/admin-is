@@ -7,14 +7,12 @@ export interface IEmailObject {
   title: string;
 }
 export interface IWorkshopTableObject {
-  id: number;
-  date: string;
-  level: '1' | '2' | '3' | '4';
+  date: string | Date;
+  level: '0' | '1' | '2' | '3' | '4';
   mail: string;
   name: string;
   notes: string;
   paid: string;
   phone: string;
   surname: string;
-  workshop: string;
 }

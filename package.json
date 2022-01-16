@@ -22,7 +22,7 @@
     "next": "12.0.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "^7.22.2",
+    "react-hook-form": "^7.24.0",
     "suneditor": "^2.41.3",
     "suneditor-react": "^3.3.1"
   },

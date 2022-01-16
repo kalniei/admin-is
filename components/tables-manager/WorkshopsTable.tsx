@@ -52,7 +52,7 @@ const WorkshopsTable = ({
       editable: true,
       renderCell: renderCellExpand
     },
-    { field: 'mail', headerName: 'Email', flex: 2, editable: true, renderCell: renderCellExpand },
+    { field: 'mail', headerName: 'Email', flex: 2.5, editable: true, renderCell: renderCellExpand },
     {
       field: 'phone',
       headerName: 'Phone',
