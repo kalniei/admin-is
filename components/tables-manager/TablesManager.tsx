@@ -6,6 +6,7 @@ import { IWorkshopTableObject } from '../../ts/interfaces';
 import WorkshopsTable from './WorkshopsTable';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal';
 import TransferModal from './TransferModal';
 import getErrorMessage from '../../helpers/getErrorMessage';
@@ -116,7 +117,7 @@ const TablesManager = (): JSX.Element => {
           disabled={!chosenWorkshop}
           color="success"
         >
-          <TransferWithinAStationIcon sx={{ mr: 1 }} />
+          <AddIcon sx={{ mr: 1 }} />
           Add New
         </Button>
         <Button
@@ -136,7 +137,7 @@ const TablesManager = (): JSX.Element => {
           disabled={!chosenWorkshop || selected.length === 0}
           color="error"
         >
-          <DeleteIcon />
+          <DeleteIcon sx={{ mr: 1 }} />
           Remove
         </Button>
       </Grid>
