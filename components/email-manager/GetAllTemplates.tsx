@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { request } from '../../helpers/restClient';
 import { IEmailObject } from '../../ts/interfaces';
 import useSnackbar from '../../snackbar/useSnackbar';
+import getErrorMessage from '../../helpers/getErrorMessage';
 
 interface PageProps {
   chosenEmail: IEmailObject;
@@ -19,8 +20,11 @@ const GetAllTemplates = ({ chosenEmail, setChosenEmail, setContent }: PageProps)
     try {
       const { data } = await request('get', '/getEmailTemplates');
       setEmailTemplates(data);
-    } catch (error) {
-      snackbar.showMessage('Not able to get emails list. Try one more time', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Not able to get emails list. Try one more time'),
+        'error'
+      );
       return;
     }
   };

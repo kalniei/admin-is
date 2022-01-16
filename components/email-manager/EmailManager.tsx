@@ -5,6 +5,7 @@ import { IEmailObject } from '../../ts/interfaces';
 import TextEditor from './TextEditor';
 import AddTemplateDialog from './AddTemplateDialog';
 import useSnackbar from '../../snackbar/useSnackbar';
+import getErrorMessage from '../../helpers/getErrorMessage';
 
 const EmailManager = (): JSX.Element => {
   const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
@@ -17,8 +18,11 @@ const EmailManager = (): JSX.Element => {
     try {
       const { data } = await request('get', '/getEmailTemplates');
       setEmailTemplates(data);
-    } catch (error) {
-      snackbar.showMessage('Not able to get emails list. Try one more time', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Not able to get emails list. Try one more time'),
+        'error'
+      );
       return;
     }
   };
@@ -41,10 +45,11 @@ const EmailManager = (): JSX.Element => {
       setContent('');
       setChosenEmail(null);
       getAllTemplates();
-    } catch (error) {
-      console.log(error);
-
-      snackbar.showMessage('Something went wrong with updating email template', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Something went wrong with updating email template'),
+        'error'
+      );
       return;
     }
   };

@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { request } from '../../helpers/restClient';
 import TextEditor from './TextEditor';
 import useSnackbar from '../../snackbar/useSnackbar';
+import getErrorMessage from '../../helpers/getErrorMessage';
 
 interface PageProps {
   openDialog: boolean;
@@ -40,8 +41,11 @@ const AddTemplateDialog = ({
 
       onTemplateAdded();
       handleClose();
-    } catch (error) {
-      snackbar.showMessage('Something went wrong with adding new email template', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Something went wrong with adding new email template'),
+        'error'
+      );
       return;
     }
   };

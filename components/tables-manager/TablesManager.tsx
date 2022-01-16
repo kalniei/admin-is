@@ -14,6 +14,8 @@ import WorkshopsTable from './WorkshopsTable';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal';
+import TransferModal from './TransferModal';
+import getErrorMessage from '../../helpers/getErrorMessage';
 
 const TablesManager = (): JSX.Element => {
   const [workshpsArr, setWorkshopsArr] = useState<string[]>([]);
@@ -24,13 +26,17 @@ const TablesManager = (): JSX.Element => {
   const snackbar = useSnackbar();
   const [selected, setSelected] = useState<IWorkshopTableObject[]>([]);
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openTransferDialog, setOpenTransferDialog] = useState<boolean>(false);
 
   const getAllWorkshops = async () => {
     try {
       const { data } = await request('get', '/getAllManagableTables');
       setWorkshopsArr(data);
-    } catch (error) {
-      snackbar.showMessage('Not able to get workshops. Try one more time', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Not able to get workshops. Try one more time'),
+        'error'
+      );
       return;
     } finally {
       setIsLoading(false);
@@ -44,8 +50,11 @@ const TablesManager = (): JSX.Element => {
         table_name: name
       });
       setTableInfo(data);
-    } catch (error) {
-      snackbar.showMessage('Not able to get chosen workshop. Try one more time', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Not able to get chosen workshop. Try one more time'),
+        'error'
+      );
       return;
     } finally {
       setIsLoading(false);
@@ -62,26 +71,36 @@ const TablesManager = (): JSX.Element => {
       snackbar.showMessage('Removed records: ' + data?.affectedRows, 'success');
       setOpenAlertDialog(false);
       getChosenWorkshop(chosenWorkshop as string);
-    } catch (error) {
-      snackbar.showMessage('Something went wrong deleting rows', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(getErrorMessage(error, 'Something went wrong deleting rows'), 'error');
       return;
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const transferChosenRows = async () => {
+  const transferChosenRows = async (table_name_to: string | null, checked: boolean) => {
     setIsProcessing(true);
     try {
-      const { data } = await request('post', '/transferToGlobalWorkshopsTable', {
-        table_name_from: chosenWorkshop,
-        table_name_to: 'ALL_Users_warsztaty',
-        row_object: selected[0]
-      });
-      snackbar.showMessage('transpered records: ' + data?.affectedRows, 'success');
+      const { data } = await request(
+        'post',
+        `${
+          checked ? '/transferAndDeleteToGlobalWorkshopsTable' : '/transferToGlobalWorkshopsTable'
+        }`,
+        {
+          table_name_from: chosenWorkshop,
+          table_name_to: table_name_to,
+          row_object: selected
+        }
+      );
+      snackbar.showMessage('transfered records: ' + data?.affectedRows, 'success');
       getChosenWorkshop(chosenWorkshop as string);
-    } catch (error) {
-      snackbar.showMessage('Something went wrong deleting rows', 'error');
+      setOpenTransferDialog(false);
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Something went wrong transfering rows'),
+        'error'
+      );
       return;
     } finally {
       setIsProcessing(false);
@@ -119,16 +138,12 @@ const TablesManager = (): JSX.Element => {
       <Grid item xs={6}>
         <Button
           sx={{ ml: 2 }}
-          onClick={transferChosenRows}
+          onClick={() => setOpenTransferDialog(true)}
           variant="outlined"
           disabled={!chosenWorkshop || selected.length === 0}
           color="success"
         >
-          {!isProcessing ? (
-            <TransferWithinAStationIcon sx={{ mr: 1 }} />
-          ) : (
-            <CircularProgress size={16} sx={{ mr: 2 }} />
-          )}
+          <TransferWithinAStationIcon sx={{ mr: 1 }} />
           Transfer
         </Button>
         <Button
@@ -143,16 +158,32 @@ const TablesManager = (): JSX.Element => {
         </Button>
       </Grid>
       <Grid item xs={12} mt={4}>
-        {tableInfo.length > 0 && (
-          <WorkshopsTable tableInfo={tableInfo} setParentSelected={setSelected} />
+        {chosenWorkshop && !isLoading && (
+          <WorkshopsTable
+            tableInfo={tableInfo}
+            setParentSelected={setSelected}
+            chosenWorkshop={chosenWorkshop}
+          />
         )}
       </Grid>
-      <DeleteConfirmationModal
-        open={openAlertDialog}
-        handleClose={() => setOpenAlertDialog(false)}
-        onConfirm={deleteChosenRows}
-        isDeleting={isProcessing}
-      />
+      {openTransferDialog && (
+        <TransferModal
+          open={openTransferDialog}
+          handleClose={() => setOpenTransferDialog(false)}
+          onConfirm={transferChosenRows}
+          isProcessing={isProcessing}
+          workshpsArr={workshpsArr}
+        />
+      )}
+
+      {openAlertDialog && (
+        <DeleteConfirmationModal
+          open={openAlertDialog}
+          handleClose={() => setOpenAlertDialog(false)}
+          onConfirm={deleteChosenRows}
+          isDeleting={isProcessing}
+        />
+      )}
     </Grid>
   );
 };

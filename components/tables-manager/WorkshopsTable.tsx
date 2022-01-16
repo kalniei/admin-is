@@ -1,31 +1,63 @@
-import { Grid, Button } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
 import { IWorkshopTableObject } from '../../ts/interfaces';
 import moment from 'moment-mini-ts';
-import EditIcon from '@mui/icons-material/Edit';
-import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridCellEditCommitParams,
+  GridColDef,
+  GridRenderCellParams,
+  GridSelectionModel
+} from '@mui/x-data-grid';
+import GridCellExpand from './GridCellExpand';
+import getErrorMessage from '../../helpers/getErrorMessage';
+import { AxiosError } from 'axios';
 
 interface PageProps {
   tableInfo: IWorkshopTableObject[];
   setParentSelected: (val: IWorkshopTableObject[]) => void;
+  chosenWorkshop: string;
 }
 
-const WorkshopsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Element => {
-  const [chosenEmail, setChosenEmail] = useState<string>('');
+const WorkshopsTable = ({
+  tableInfo,
+  setParentSelected,
+  chosenWorkshop
+}: PageProps): JSX.Element => {
   const [pageSize, setPageSize] = useState<number>(5);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
+  const [rows, setRows] = useState(tableInfo);
+
+  const snackbar = useSnackbar();
+
+  function renderCellExpand(params: GridRenderCellParams<string>) {
+    return <GridCellExpand value={params.value || ''} width={params.colDef.computedWidth} />;
+  }
+
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'id', flex: 0.2 },
-    { field: 'name', headerName: 'First Name', flex: 1 },
-    { field: 'surname', headerName: 'Last Name', flex: 1 },
-    { field: 'mail', headerName: 'Email', flex: 2 },
+    {
+      field: 'name',
+      headerName: 'First Name',
+      flex: 1,
+      editable: true,
+      renderCell: renderCellExpand
+    },
+    {
+      field: 'surname',
+      headerName: 'Last Name',
+      flex: 1,
+      editable: true,
+      renderCell: renderCellExpand
+    },
+    { field: 'mail', headerName: 'Email', flex: 2, editable: true, renderCell: renderCellExpand },
     {
       field: 'phone',
       headerName: 'Phone',
-      flex: 1
+      flex: 1,
+      editable: true
     },
     {
       field: 'date',
@@ -33,40 +65,49 @@ const WorkshopsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Elemen
       flex: 1,
       valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM')
     },
-    { field: 'level', headerName: 'Level', flex: 0.2 },
-    { field: 'notes', headerName: 'Notes', flex: 1 },
-    { field: 'paid', headerName: 'Paid', flex: 0.2 },
-    {
-      field: 'edit',
-      flex: 0.5,
-      headerName: 'Edit',
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => (
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setChosenEmail(String(params.id));
-          }}
-        >
-          <EditIcon />
-        </Button>
-      )
-    }
+    { field: 'level', headerName: 'Level', flex: 0.2, editable: true },
+    { field: 'notes', headerName: 'Notes', flex: 1, editable: true, renderCell: renderCellExpand },
+    { field: 'paid', headerName: 'Paid', flex: 0.2, editable: true }
   ];
 
+  const handleCellEditCommit = async (params: GridCellEditCommitParams) => {
+    if (!params.id || !params.field || !params.value) return;
+    try {
+      const { data } = await request('post', '/updateWorkshopRow', {
+        table_name: chosenWorkshop,
+        id: params.id,
+        data: {
+          [params.field]: params.value
+        }
+      });
+      setRows((prev) =>
+        prev.map((row) => (row.mail === params.id ? { ...row, [params.field]: params.value } : row))
+      );
+      setSelectionModel([]);
+      snackbar.showMessage('Edited user with id: ' + params.id, 'success');
+    } catch (error: any) {
+      snackbar.showMessage(getErrorMessage(error, 'Something went wrong editing rows'), 'error');
+      setRows((prev) => [...prev]);
+      return;
+    }
+  };
+
   useEffect(() => {
-    const tempArr = tableInfo.filter((x: any) => selectionModel.includes(x['id']));
+    const tempArr = rows.filter((x: any) => selectionModel.includes(x.mail));
     setParentSelected(tempArr);
   }, [selectionModel]);
+
+  useEffect(() => {
+    setRows(tableInfo);
+  }, [tableInfo]);
 
   return (
     <Grid>
       <DataGrid
         autoHeight={true}
-        rows={tableInfo}
+        rows={rows}
         columns={columns}
-        getRowId={(row) => row['id']}
+        getRowId={(row) => row['mail']}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20, 100, 1000]}
@@ -77,6 +118,7 @@ const WorkshopsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Elemen
           setSelectionModel(newSelectionModel);
         }}
         selectionModel={selectionModel}
+        onCellEditCommit={handleCellEditCommit}
       />
     </Grid>
   );

@@ -10,6 +10,7 @@ import {
   Autocomplete
 } from '@mui/material';
 import { useEffect, useState, useRef } from 'react';
+import getErrorMessage from '../../helpers/getErrorMessage';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
 import { IEmailObject } from '../../ts/interfaces';
@@ -26,8 +27,11 @@ const MailSender = (): JSX.Element => {
     try {
       const { data } = await request('get', '/getEmailTemplates');
       setEmailTemplates(data);
-    } catch (error) {
-      snackbar.showMessage('Not able to get emails list. Try one more time', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Not able to get emails list. Try one more time'),
+        'error'
+      );
       return;
     }
   };
@@ -50,8 +54,11 @@ const MailSender = (): JSX.Element => {
       snackbar.showMessage('Emails have been send', 'success');
       setContent('');
       setChosenEmail(null);
-    } catch (error) {
-      snackbar.showMessage('Something went wrong with sending emails', 'error');
+    } catch (error: any) {
+      snackbar.showMessage(
+        getErrorMessage(error, 'Something went wrong with sending emails'),
+        'error'
+      );
       return;
     }
   };
