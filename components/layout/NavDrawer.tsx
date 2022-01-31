@@ -14,6 +14,10 @@ const NavDrawer = (): JSX.Element => {
       path: '/tables-manager'
     },
     {
+      text: 'Email Templates Manager',
+      path: '/email-manager'
+    },
+    {
       text: 'Send Emails',
       path: '/mail-sender'
     },
@@ -24,10 +28,6 @@ const NavDrawer = (): JSX.Element => {
     {
       text: 'Manager Workshops',
       path: '/mail-sender'
-    },
-    {
-      text: 'Email Templates Manager',
-      path: '/email-manager'
     }
   ];
 

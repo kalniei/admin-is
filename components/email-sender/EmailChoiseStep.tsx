@@ -1,4 +1,12 @@
-import { Autocomplete, Grid, TextField, LinearProgress, Card } from '@mui/material';
+import {
+  Autocomplete,
+  Grid,
+  TextField,
+  LinearProgress,
+  Card,
+  FormControlLabel,
+  Switch
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
@@ -14,6 +22,8 @@ interface PageProps {
   setSelected: (val: string[]) => void;
 }
 
+const DEFAULT_EMAIL = 'szymonpaszek2@gmail.com';
+
 const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
   const [workshpsArr, setWorkshopsArr] = useState<string[]>([]);
   const [tableInfo, setTableInfo] = useState<IWorkshopTableObject[]>([]);
@@ -21,6 +31,7 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageSize, setPageSize] = useState<number>(5);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+  const [checked, setChecked] = useState(true);
 
   const snackbar = useSnackbar();
 
@@ -101,8 +112,16 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
   }, [chosenWorkshop]);
 
   useEffect(() => {
-    setSelected(selectionModel as string[]);
-  }, [selectionModel]);
+    let temp = JSON.parse(JSON.stringify(selectionModel));
+
+    if (checked && !temp.includes(DEFAULT_EMAIL)) {
+      temp.push(DEFAULT_EMAIL);
+    } else if (!checked && temp.includes(DEFAULT_EMAIL)) {
+      temp = temp.filter((item: string) => item !== DEFAULT_EMAIL);
+    }
+
+    setSelected(temp);
+  }, [selectionModel, checked]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -124,6 +143,19 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
                 renderInput={(params) => (
                   <TextField {...params} variant="standard" label="Choose table" />
                 )}
+              />
+            </Grid>
+
+            <Grid item xs={5}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={checked}
+                    onChange={(e) => setChecked(e.target.checked)}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                }
+                label={`Send to ${DEFAULT_EMAIL}`}
               />
             </Grid>
 
