@@ -32,7 +32,7 @@ const TablesManager = (): JSX.Element => {
       setWorkshopsArr(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get workshops. Try one more time'),
+        getErrorMessage(error, 'Nie mogę dostać tabele warsztatów. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -50,7 +50,7 @@ const TablesManager = (): JSX.Element => {
       setTableInfo(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get chosen workshop. Try one more time'),
+        getErrorMessage(error, 'Nie udało się dostać wybranego warsztatu. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -66,11 +66,14 @@ const TablesManager = (): JSX.Element => {
         table_name: chosenWorkshop,
         key_values: selected.map((x) => x.mail)
       });
-      snackbar.showMessage('Removed records: ' + data?.affectedRows, 'success');
+      snackbar.showMessage('Usunięte wierszy: ' + data?.affectedRows, 'success');
       setOpenAlertDialog(false);
       getChosenWorkshop(chosenWorkshop as string);
     } catch (error: any) {
-      snackbar.showMessage(getErrorMessage(error, 'Something went wrong deleting rows'), 'error');
+      snackbar.showMessage(
+        getErrorMessage(error, 'Coś poszło nie tak podczas usuwania wierszy'),
+        'error'
+      );
       return;
     } finally {
       setIsDeleting(false);
@@ -105,7 +108,7 @@ const TablesManager = (): JSX.Element => {
           onChange={(e, val) => setChosenWorkshop(val)}
           options={workshpsArr}
           renderInput={(params) => (
-            <TextField {...params} variant="standard" label="Choose table" />
+            <TextField {...params} variant="standard" label="Wybierz tabele" />
           )}
         />
       </Grid>
@@ -118,7 +121,7 @@ const TablesManager = (): JSX.Element => {
           color="success"
         >
           <AddIcon sx={{ mr: 1 }} />
-          Add New
+          Dodaj nowego użytkownika
         </Button>
         <Button
           sx={{ ml: 2 }}
@@ -128,7 +131,7 @@ const TablesManager = (): JSX.Element => {
           color="primary"
         >
           <TransferWithinAStationIcon sx={{ mr: 1 }} />
-          Transfer
+          przenieś
         </Button>
         <Button
           sx={{ ml: 2 }}
@@ -138,7 +141,7 @@ const TablesManager = (): JSX.Element => {
           color="error"
         >
           <DeleteIcon sx={{ mr: 1 }} />
-          Remove
+          Usuń
         </Button>
       </Grid>
       <Grid item xs={12} mt={4}>

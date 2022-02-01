@@ -18,7 +18,7 @@ const MainLayout = ({ children }: IPage): JSX.Element => {
       >
         <Toolbar>
           <Typography variant="h5" noWrap component="div">
-            {router.pathname !== '/' ? formatPathname(router.pathname) : 'Home Page'}
+            {formatPathname(router.pathname)}
           </Typography>
         </Toolbar>
       </AppBar>

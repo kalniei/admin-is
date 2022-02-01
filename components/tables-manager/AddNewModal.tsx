@@ -57,11 +57,14 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
         table_name: tableFrom,
         data_object: formData
       });
-      snackbar.showMessage('User is created!', 'success');
+      snackbar.showMessage('Użytkownik został utworzony!', 'success');
       onConfirm();
       handleClose();
     } catch (error: any) {
-      snackbar.showMessage(getErrorMessage(error, 'Something went wrong adding new user'), 'error');
+      snackbar.showMessage(
+        getErrorMessage(error, 'Coś poszło nie tak podczas dodawania nowego użytkownika'),
+        'error'
+      );
       return;
     } finally {
       setIsProcessing(false);
@@ -72,7 +75,7 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
     <Dialog maxWidth={'sm'} fullWidth={true} open={open}>
       <DialogTitle>
         <Typography variant="h4" component="p">
-          Add New User
+          Dodaj nowego użytkownika
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -83,14 +86,14 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
                 control={control}
                 name="name"
                 rules={{
-                  required: { value: true, message: 'Required' }
+                  required: { value: true, message: 'Wymagany' }
                 }}
                 render={({ field }) => (
                   <TextField
                     variant="standard"
                     {...field}
-                    label="First Name"
-                    placeholder="Enter First Name"
+                    label="Imię"
+                    placeholder="Wpisz Imię"
                     fullWidth
                     required
                     error={!!errors?.name}
@@ -104,14 +107,14 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
                 control={control}
                 name="surname"
                 rules={{
-                  required: { value: true, message: 'Required' }
+                  required: { value: true, message: 'Wymagany' }
                 }}
                 render={({ field }) => (
                   <TextField
                     variant="standard"
                     {...field}
-                    label="Last Name"
-                    placeholder="Enter Last Name"
+                    label="Nazwisko"
+                    placeholder="Wpisz Nazwisko"
                     fullWidth
                     error={!!errors?.surname}
                     helperText={errors?.surname?.message}
@@ -128,20 +131,20 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
                 rules={{
                   required: {
                     value: true,
-                    message: 'Email is required'
+                    message: 'Email jest wymagany'
                   },
                   pattern: {
                     value:
                       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    message: 'Invalid e-mail.'
+                    message: 'Niepoprawny e-mail.'
                   }
                 }}
                 render={({ field }) => (
                   <TextField
                     variant="standard"
                     {...field}
-                    label="User Email"
-                    placeholder="Enter User Email"
+                    label="Adres e-mail użytkownika"
+                    placeholder="Wpisz e-mail"
                     fullWidth
                     error={!!errors?.mail}
                     helperText={errors?.mail?.message}
@@ -159,15 +162,15 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
                   <TextField
                     variant="standard"
                     {...field}
-                    label="User Phone"
-                    placeholder="Enter Phone"
+                    label="Telefon użytkownika"
+                    placeholder="Wpisz telefon"
                     fullWidth
                   />
                 )}
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Choose level </Typography>
+              <Typography>Wybierz poziom</Typography>
               <Controller
                 name="level"
                 control={control}
@@ -190,8 +193,8 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
                   <TextField
                     variant="standard"
                     {...field}
-                    label="User notes"
-                    placeholder="Enter notes"
+                    label="Notatka"
+                    placeholder="wpisz noptatke"
                     fullWidth
                   />
                 )}
@@ -205,7 +208,7 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
                   <TextField
                     variant="standard"
                     {...field}
-                    label="Has he paid?"
+                    label="Czy zapłacił?"
                     placeholder="we can think of the format or just leave any"
                     fullWidth
                   />
@@ -217,7 +220,7 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="error" variant="outlined" disabled={isProcessing}>
-          Cancel
+          Anuluj
         </Button>
         <Button
           variant="outlined"
@@ -225,7 +228,7 @@ const AddNewModal = ({ handleClose, open, onConfirm, tableFrom }: PageProps): JS
           disabled={isProcessing}
           color="success"
         >
-          Save
+          Zapisz
         </Button>
       </DialogActions>
     </Dialog>

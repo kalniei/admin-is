@@ -22,7 +22,7 @@ const ConfirmationStep = ({
           <Grid container item alignItems="flex-start" justifyContent="space-between" p={4}>
             <Grid item xs={6}>
               <Typography fontWeight={600} color={'#020260'}>
-                We will send emails to those addresses:
+                Na te adresy wyślemy e-maile:
               </Typography>
               {emailsList.map((email, index) => (
                 <Typography
@@ -42,11 +42,11 @@ const ConfirmationStep = ({
             </Grid>
             <Grid item xs={6}>
               <Typography mb={2} fontWeight={600} color={'#020260'}>
-                This is how will this email look like:
+                Tak będzie wyglądał ten e-mail:
               </Typography>
               <Divider />
               <Typography m={2} fontWeight={600}>
-                Title: {title}
+                Temat: {title}
               </Typography>
               <Divider />
               <div dangerouslySetInnerHTML={{ __html: content }}></div>

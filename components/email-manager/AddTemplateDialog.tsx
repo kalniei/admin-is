@@ -29,7 +29,7 @@ const AddTemplateDialog = ({
 
   const addNewTemplate = async () => {
     if (!title || !content) {
-      snackbar.showMessage('Please provide title and content', 'warning');
+      snackbar.showMessage('Podaj tytuł i treść', 'warning');
       return;
     }
     try {
@@ -37,13 +37,16 @@ const AddTemplateDialog = ({
         title: title,
         content: JSON.stringify(content)
       });
-      snackbar.showMessage('New template is successfully added!', 'success');
+      snackbar.showMessage('Nowy szablon został pomyślnie dodany!', 'success');
 
       onTemplateAdded();
       handleClose();
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Something went wrong with adding new email template'),
+        getErrorMessage(
+          error,
+          'Coś poszło nie tak podczas dodawania nowego szablonu wiadomości e-mail'
+        ),
         'error'
       );
       return;
@@ -56,7 +59,7 @@ const AddTemplateDialog = ({
 
   return (
     <Dialog open={openDialog} fullWidth={true} maxWidth={'lg'}>
-      <DialogTitle>Add New Email Template</DialogTitle>
+      <DialogTitle>Dodaj nowy szablon wiadomości e-mail</DialogTitle>
       <DialogContent>
         <TextField
           required
@@ -71,10 +74,10 @@ const AddTemplateDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant="outlined" color="error">
-          Cancel
+          Anuluj
         </Button>
         <Button onClick={addNewTemplate} variant="outlined" color="success">
-          Save
+          Zapisz
         </Button>
       </DialogActions>
     </Dialog>

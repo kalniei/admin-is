@@ -20,7 +20,7 @@ const EmailManager = (): JSX.Element => {
       setEmailTemplates(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get emails list. Try one more time'),
+        getErrorMessage(error, 'Nie można uzyskać listy adresów e-mail. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -33,7 +33,7 @@ const EmailManager = (): JSX.Element => {
 
   const saveTemplate = async () => {
     if (!content) {
-      snackbar.showMessage('Please provide  content', 'warning');
+      snackbar.showMessage('Proszę podać treść', 'warning');
       return;
     }
     try {
@@ -41,13 +41,16 @@ const EmailManager = (): JSX.Element => {
         id: (chosenEmail as IEmailObject).unique_id,
         data: { content: JSON.stringify(content) }
       });
-      snackbar.showMessage('New template is successfully updated!', 'success');
+      snackbar.showMessage('Nowy szablon został pomyślnie zaktualizowany!', 'success');
       setContent('');
       setChosenEmail(null);
       getAllTemplates();
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Something went wrong with updating email template'),
+        getErrorMessage(
+          error,
+          'Coś poszło nie tak podczas aktualizowania szablonu wiadomości e-mail'
+        ),
         'error'
       );
       return;
@@ -76,18 +79,18 @@ const EmailManager = (): JSX.Element => {
             options={emailTemplates}
             getOptionLabel={(option: IEmailObject) => option.title}
             renderInput={(params) => (
-              <TextField {...params} variant="standard" label="Choose email template" fullWidth />
+              <TextField {...params} variant="standard" label="Wybierz szablon e-mail" fullWidth />
             )}
           />
         </Grid>
         <Grid item xs={1} pl={4}>
           <Button variant="outlined" onClick={saveTemplate}>
-            Save
+            Zapisz
           </Button>
         </Grid>
         <Grid item xs={5} textAlign="right">
           <Button variant="outlined" onClick={() => setOpenDialog(true)}>
-            Add New Template
+            Dodaj nowy szablon
           </Button>
         </Grid>
       </Grid>

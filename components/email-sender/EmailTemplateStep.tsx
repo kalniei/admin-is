@@ -32,7 +32,7 @@ const EmailTemplateStep = ({
       setEmailTemplates(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get emails list. Try one more time'),
+        getErrorMessage(error, 'Nie można uzyskać listy szablonów e-mail. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -59,7 +59,7 @@ const EmailTemplateStep = ({
             <Grid item xs={12}>
               <TextField
                 required
-                label="Email Subject"
+                label="Temat emaila"
                 fullWidth
                 variant="standard"
                 value={title}
@@ -78,14 +78,14 @@ const EmailTemplateStep = ({
                   <TextField
                     {...params}
                     variant="standard"
-                    label="Choose email template"
+                    label="Wybierz szablon e-mail"
                     fullWidth
                   />
                 )}
               />
             </Grid>
             <Grid item xs={6} pl={4}>
-              <Typography>or create a new one: </Typography>
+              <Typography>lub utwórz nowy: </Typography>
             </Grid>
           </Grid>
 

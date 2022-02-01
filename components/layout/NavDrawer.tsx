@@ -1,35 +1,11 @@
 import { Drawer, Toolbar, Divider, List, ListItem, ListItemText } from '@mui/material';
 import router from 'next/dist/client/router';
+import { getNavArr } from '../../helpers/formatPathname';
 
 const drawerWidth = 250;
 
 const NavDrawer = (): JSX.Element => {
-  const menuArr = [
-    {
-      text: 'Home',
-      path: '/'
-    },
-    {
-      text: 'Tabels Manager',
-      path: '/tables-manager'
-    },
-    {
-      text: 'Email Templates Manager',
-      path: '/email-manager'
-    },
-    {
-      text: 'Send Emails',
-      path: '/mail-sender'
-    },
-    {
-      text: 'Workshops Creator',
-      path: '/mail-sender'
-    },
-    {
-      text: 'Manager Workshops',
-      path: '/mail-sender'
-    }
-  ];
+  const menuArr = getNavArr();
 
   const listItemClick = (path: string) => {
     router.push(path);

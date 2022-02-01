@@ -59,12 +59,12 @@ const TransferModal = ({
           row_object: selected
         }
       );
-      snackbar.showMessage('transfered records: ' + data?.affectedRows, 'success');
+      snackbar.showMessage('Przeniesione wiersze: ' + data?.affectedRows, 'success');
       onConfirm();
       handleClose();
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Something went wrong transfering rows'),
+        getErrorMessage(error, 'Coś poszło nie tak podczas przenoszenia wierszy'),
         'error'
       );
       return;
@@ -77,7 +77,7 @@ const TransferModal = ({
     <Dialog maxWidth={'sm'} fullWidth={true} open={open}>
       <DialogTitle>
         <Typography variant="h4" component="p">
-          Confirmation
+          Potwierdzenie
         </Typography>
       </DialogTitle>
       <DialogContent dividers>
@@ -89,7 +89,7 @@ const TransferModal = ({
             <TextField
               {...params}
               variant="standard"
-              label="Choose table to witch you wan to transfer records?"
+              label="Wybierz tabelę, do której chcesz przenieść rekordy"
             />
           )}
         />
@@ -102,18 +102,18 @@ const TransferModal = ({
                 inputProps={{ 'aria-label': 'controlled' }}
               />
             }
-            label="Transfer AND Delete"
+            label="Przenieś I Usuń"
           />
         </FormGroup>
 
         <Typography mt={4} color={Colors.darkOrange}>
-          Are you sure you want to transfer {checked ? 'AND DELETE' : ''} those records? <br /> This
-          action can not be reverted.
+          Czy na pewno chcesz przenieść {checked ? 'I USUNĄĆ' : ''} te wiersze? <br /> Tą akcję nie
+          można cofnąć.
         </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="error" variant="outlined" disabled={isProcessing}>
-          Cancel
+          Anuluj
         </Button>
         <Button
           variant="outlined"
@@ -121,7 +121,7 @@ const TransferModal = ({
           disabled={!chosenWorkshop || isProcessing}
           color="success"
         >
-          {checked ? 'Transfer AND Delete' : 'Transfer'}
+          {checked ? 'Przenieś I Usuń' : 'Przenieś'}
         </Button>
       </DialogActions>
     </Dialog>

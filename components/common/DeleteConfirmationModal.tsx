@@ -34,16 +34,16 @@ const DeleteConfirmationModal = ({
     >
       <DialogTitle id="form-dialog-title">
         <Typography variant="h4" component="p">
-          Confirmation
+          Potwierdzenie usunięcia
         </Typography>
       </DialogTitle>
-      <DialogContent dividers>Are you sure you want to delete those records?</DialogContent>
+      <DialogContent dividers>Czy na pewno chcesz usunąć te rekordy?</DialogContent>
       <DialogActions>
         <Button onClick={closeDialog} color="error" variant="outlined" disabled={isDeleting}>
-          Cancel
+          Anuluj
         </Button>
         <Button variant="outlined" onClick={onConfirm} disabled={isDeleting} color="success">
-          Delete
+          Usuń
         </Button>
       </DialogActions>
     </Dialog>

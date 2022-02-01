@@ -11,15 +11,15 @@ import router from 'next/dist/client/router';
 const steps = [
   {
     id: 0,
-    name: "Choose user's emails"
+    name: 'Wybierz adresy e-mail użytkowników'
   },
   {
     id: 1,
-    name: 'Manage Email Template'
+    name: 'Zarządzaj szablonem wiadomości e-mail'
   },
   {
     id: 2,
-    name: 'Confirm and Send'
+    name: 'Potwierdź i wyślij'
   }
 ];
 
@@ -73,7 +73,7 @@ const EmailStepper = () => {
           .catch((error) => {
             setIsSending(false);
             snackbar.showMessage(
-              getErrorMessage(error, 'Something went wrong with sending emails'),
+              getErrorMessage(error, 'Coś poszło nie tak podczas wysyłania e-maili'),
               'error'
             );
           });
@@ -83,14 +83,14 @@ const EmailStepper = () => {
     promise.then(() => {
       setIsSending(false);
       setAllDone(true);
-      snackbar.showMessage('Action is finished. You can see autcome in emails', 'success');
+      snackbar.showMessage('Akcja zakończona. Możesz zobaczyć wynik w e-mailach', 'success');
     });
   };
 
   const sendEmail = async () => {
     if (!content || !title || selected.length === 0) {
       snackbar.showMessage(
-        `Please provide: ${!content ? 'content ' : !title ? 'title' : 'selected email'}`,
+        `Proszę podać: ${!content ? 'treść ' : !title ? 'temat' : 'wybrane adresy e-mail'}`,
         'warning'
       );
       return;
@@ -139,7 +139,7 @@ const EmailStepper = () => {
             variant="outlined"
             onClick={handleBack}
           >
-            Back
+            Wróć
           </Button>
 
           {activeStep === 0 && (
@@ -149,7 +149,7 @@ const EmailStepper = () => {
               disabled={selected.length === 0}
               onClick={handleNext}
             >
-              Go Next
+              Dalej
             </Button>
           )}
 
@@ -160,19 +160,19 @@ const EmailStepper = () => {
               disabled={!content || !title}
               onClick={handleNext}
             >
-              Go Next
+              Dalej
             </Button>
           )}
 
           {activeStep === 2 && !allDone && (
             <Button sx={{ ml: 2 }} variant="outlined" disabled={isSending} onClick={sendEmail}>
               {isSending && <CircularProgress size={20} />}
-              Send Emails
+              Wyślij e-maile
             </Button>
           )}
           {activeStep === 2 && allDone && (
             <Button sx={{ ml: 2 }} variant="outlined" onClick={finishStepper}>
-              Finish
+              Zakończ
             </Button>
           )}
         </Grid>

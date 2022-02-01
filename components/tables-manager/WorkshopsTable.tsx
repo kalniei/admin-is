@@ -40,14 +40,14 @@ const WorkshopsTable = ({
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'First Name',
+      headerName: 'Imię',
       flex: 1,
       editable: true,
       renderCell: renderCellExpand
     },
     {
       field: 'surname',
-      headerName: 'Last Name',
+      headerName: 'Nazwisko',
       flex: 1,
       editable: true,
       renderCell: renderCellExpand
@@ -55,19 +55,25 @@ const WorkshopsTable = ({
     { field: 'mail', headerName: 'Email', flex: 2.5, editable: true, renderCell: renderCellExpand },
     {
       field: 'phone',
-      headerName: 'Phone',
+      headerName: 'Telefon',
       flex: 1,
       editable: true
     },
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: 'Data',
       flex: 1,
       valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM')
     },
-    { field: 'level', headerName: 'Level', flex: 0.2, editable: true },
-    { field: 'notes', headerName: 'Notes', flex: 1, editable: true, renderCell: renderCellExpand },
-    { field: 'paid', headerName: 'Paid', flex: 0.2, editable: true }
+    { field: 'level', headerName: 'Poziom', flex: 0.2, editable: true },
+    {
+      field: 'notes',
+      headerName: 'Notatki',
+      flex: 1,
+      editable: true,
+      renderCell: renderCellExpand
+    },
+    { field: 'paid', headerName: 'Zapłacone', flex: 0.2, editable: true }
   ];
 
   const handleCellEditCommit = async (params: GridCellEditCommitParams) => {
@@ -84,9 +90,12 @@ const WorkshopsTable = ({
         prev.map((row) => (row.mail === params.id ? { ...row, [params.field]: params.value } : row))
       );
       setSelectionModel([]);
-      snackbar.showMessage('Edited user with id: ' + params.id, 'success');
+      snackbar.showMessage('Edytowany użytkownik o identyfikatorze: ' + params.id, 'success');
     } catch (error: any) {
-      snackbar.showMessage(getErrorMessage(error, 'Something went wrong editing rows'), 'error');
+      snackbar.showMessage(
+        getErrorMessage(error, 'Coś poszło nie tak podczas edycji wierszy'),
+        'error'
+      );
       setRows((prev) => [...prev]);
       return;
     }

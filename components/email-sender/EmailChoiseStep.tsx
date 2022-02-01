@@ -42,31 +42,31 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'First Name',
+      headerName: 'Imię',
       flex: 1,
       renderCell: renderCellExpand
     },
     {
       field: 'surname',
-      headerName: 'Last Name',
+      headerName: 'Nazwisko',
       flex: 1,
       renderCell: renderCellExpand
     },
-    { field: 'mail', headerName: 'Email', flex: 2.5, renderCell: renderCellExpand },
+    { field: 'mail', headerName: 'E-mail', flex: 2.5, renderCell: renderCellExpand },
     {
       field: 'phone',
-      headerName: 'Phone',
+      headerName: 'Telefon',
       flex: 1
     },
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: 'Data',
       flex: 1,
       valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM')
     },
-    { field: 'level', headerName: 'Level', flex: 0.2 },
-    { field: 'notes', headerName: 'Notes', flex: 1, renderCell: renderCellExpand },
-    { field: 'paid', headerName: 'Paid', flex: 0.2 }
+    { field: 'level', headerName: 'Poziom', flex: 0.2 },
+    { field: 'notes', headerName: 'Notatki', flex: 1, renderCell: renderCellExpand },
+    { field: 'paid', headerName: 'Zapłacone', flex: 0.2 }
   ];
 
   const getAllWorkshops = async () => {
@@ -75,7 +75,7 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
       setWorkshopsArr(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get workshops. Try one more time'),
+        getErrorMessage(error, 'Nie mogę dostać tabeli warsztatów. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -93,7 +93,7 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
       setTableInfo(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get chosen workshop. Try one more time'),
+        getErrorMessage(error, 'Nie udało się dostać wybranego warsztatu. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -141,7 +141,7 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
                 onChange={(e, val) => setChosenWorkshop(val)}
                 options={workshpsArr}
                 renderInput={(params) => (
-                  <TextField {...params} variant="standard" label="Choose table" />
+                  <TextField {...params} variant="standard" label="Wybierz tabele" />
                 )}
               />
             </Grid>
@@ -155,7 +155,7 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
                     inputProps={{ 'aria-label': 'controlled' }}
                   />
                 }
-                label={`Send to ${DEFAULT_EMAIL}`}
+                label={`Wyślij do ${DEFAULT_EMAIL}`}
               />
             </Grid>
 

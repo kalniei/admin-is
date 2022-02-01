@@ -1,12 +1,4 @@
-import {
-  Card,
-  CardContent,
-  Grid,
-  Button,
-  Typography,
-  Divider,
-  CircularProgress
-} from '@mui/material';
+import { Card, Grid, Typography, CircularProgress } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useEffect, useState } from 'react';
@@ -16,10 +8,10 @@ import { IWorkshopTableObject } from '../ts/interfaces';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const generalData = {
-  labels: ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level unknown'],
+  labels: ['Poziom 0', 'Poziom 1', 'Poziom 2', 'Poziom 3', 'Poziom 4', 'Poziom nieznany'],
   datasets: [
     {
-      label: 'All users',
+      label: 'Wszyscy użytkownicy',
       data: [12, 19, 3, 5, 2, 3],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
@@ -81,10 +73,10 @@ const Home = (): JSX.Element => {
         table_name: 'ALL_Users_warsztaty'
       });
       setAllUsersDataSet({
-        labels: ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4'],
+        labels: ['Poziom 0', 'Poziom 1', 'Poziom 2', 'Poziom 3', 'Poziom 4'],
         datasets: [
           {
-            label: 'All users',
+            label: 'Wszyscy użytkownicy',
             data: countAllLevel(data),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -109,10 +101,10 @@ const Home = (): JSX.Element => {
         table_name: '1_DDI_1_warsztaty'
       });
       setWDrzwiSet({
-        labels: ['Paid', 'Not Paid'],
+        labels: ['Zapłacony', 'Nie Zapłacony'],
         datasets: [
           {
-            label: 'All users',
+            label: 'Wszyscy użytkownicy',
             data: countPaid(data),
             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
             borderWidth: 1
@@ -130,10 +122,10 @@ const Home = (): JSX.Element => {
         table_name: '2_SEJF_1_warsztaty'
       });
       setWSejfSet({
-        labels: ['Paid', 'Not Paid'],
+        labels: ['Zapłacony', 'Nie Zapłacony'],
         datasets: [
           {
-            label: 'All users',
+            label: 'Wszyscy użytkownicy',
             data: countPaid(data),
             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
             borderWidth: 1
@@ -151,10 +143,10 @@ const Home = (): JSX.Element => {
         table_name: '3_TWIERDZA_1_warsztaty'
       });
       setWTwierdzaSet({
-        labels: ['Paid', 'Not Paid'],
+        labels: ['Zapłacony', 'Nie Zapłacony'],
         datasets: [
           {
-            label: 'All users',
+            label: 'Wszyscy użytkownicy',
             data: countPaid(data),
             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
             borderWidth: 1
@@ -172,10 +164,10 @@ const Home = (): JSX.Element => {
         table_name: '4_KROLESTWO_1_warsztaty'
       });
       setWKrolestwoSet({
-        labels: ['Paid', 'Not Paid'],
+        labels: ['Zapłacony', 'Nie Zapłacony'],
         datasets: [
           {
-            label: 'All users',
+            label: 'Wszyscy użytkownicy',
             data: countPaid(data),
             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
             borderWidth: 1
@@ -203,7 +195,7 @@ const Home = (): JSX.Element => {
           <Grid item xs={6} textAlign="center">
             <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
               <Typography variant="h6" textAlign="center">
-                All Users
+                Wszyscy użytkownicy
               </Typography>
               {!allUsersDataSet ? <CircularProgress /> : <Doughnut data={allUsersDataSet} />}
             </Card>
@@ -211,7 +203,7 @@ const Home = (): JSX.Element => {
           <Grid item xs={6}>
             <Card sx={{ p: 4, maxWidth: '500px' }}>
               <Typography variant="h6" textAlign="center">
-                All Events
+                Wszystkie wydarzenia
               </Typography>
 
               <Doughnut data={generalData} />

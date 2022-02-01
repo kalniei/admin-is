@@ -22,7 +22,7 @@ const GetAllTemplates = ({ chosenEmail, setChosenEmail, setContent }: PageProps)
       setEmailTemplates(data);
     } catch (error: any) {
       snackbar.showMessage(
-        getErrorMessage(error, 'Not able to get emails list. Try one more time'),
+        getErrorMessage(error, 'Nie można uzyskać listy adresów e-mail. Spróbuj jeszcze raz'),
         'error'
       );
       return;
@@ -44,7 +44,7 @@ const GetAllTemplates = ({ chosenEmail, setChosenEmail, setContent }: PageProps)
 
   return (
     <FormControl fullWidth variant="standard">
-      <InputLabel>Choose email template</InputLabel>
+      <InputLabel>Wybierz szablon e-mail</InputLabel>
       <Select value={chosenEmail} label="email" onChange={onSelectChange}>
         {emailTemplates.map((template) => (
           //@ts-ignore - necessary to load object into value
