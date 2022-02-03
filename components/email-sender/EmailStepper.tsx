@@ -133,15 +133,16 @@ const EmailStepper = () => {
           />
         </Grid>
         <Grid item xs={12} textAlign="right" mt={4}>
-          <Button
-            disabled={activeStep === 0}
-            color="inherit"
-            variant="outlined"
-            onClick={handleBack}
-          >
-            Wróć
-          </Button>
-
+          {!allDone && (
+            <Button
+              disabled={activeStep === 0}
+              color="inherit"
+              variant="outlined"
+              onClick={handleBack}
+            >
+              Wróć
+            </Button>
+          )}
           {activeStep === 0 && (
             <Button
               sx={{ ml: 2 }}
@@ -152,7 +153,6 @@ const EmailStepper = () => {
               Dalej
             </Button>
           )}
-
           {activeStep === 1 && (
             <Button
               sx={{ ml: 2 }}
@@ -163,7 +163,6 @@ const EmailStepper = () => {
               Dalej
             </Button>
           )}
-
           {activeStep === 2 && !allDone && (
             <Button sx={{ ml: 2 }} variant="outlined" disabled={isSending} onClick={sendEmail}>
               {isSending && <CircularProgress size={20} />}

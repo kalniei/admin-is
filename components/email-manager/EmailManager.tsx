@@ -1,43 +1,30 @@
-import { Grid, Button, Autocomplete, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Grid, Button } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import { IEmailObject } from '../../ts/interfaces';
 import TextEditor from './TextEditor';
 import AddTemplateDialog from './AddTemplateDialog';
 import useSnackbar from '../../snackbar/useSnackbar';
 import getErrorMessage from '../../helpers/getErrorMessage';
+import EmailTemplatesAutocomplete from './EmailTemplatesAutocomplete';
 
 const EmailManager = (): JSX.Element => {
-  const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
   const [content, setContent] = useState<string>('');
   const [chosenEmail, setChosenEmail] = useState<IEmailObject | null>(null);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const snackbar = useSnackbar();
+  const myRef = useRef();
 
-  const getAllTemplates = async () => {
-    try {
-      const { data } = await request('get', '/getEmailTemplates');
-      setEmailTemplates(data);
-    } catch (error: any) {
-      snackbar.showMessage(
-        getErrorMessage(error, 'Nie można uzyskać listy adresów e-mail. Spróbuj jeszcze raz'),
-        'error'
-      );
-      return;
-    }
+  const getAllTemplates = () => {
+    (myRef as any).current.getAllTemplates();
   };
-
-  const onSelectChange = (event: any, value: IEmailObject | null) => {
-    setChosenEmail(value);
-  };
-
   const saveTemplate = async () => {
     if (!content) {
       snackbar.showMessage('Proszę podać treść', 'warning');
       return;
     }
     try {
-      const data = await request('post', '/updateEmailTemplate', {
+      await request('post', '/updateEmailTemplate', {
         id: (chosenEmail as IEmailObject).unique_id,
         data: { content: JSON.stringify(content) }
       });
@@ -65,22 +52,14 @@ const EmailManager = (): JSX.Element => {
     setContent(JSON.parse((chosenEmail as IEmailObject).content));
   }, [chosenEmail]);
 
-  useEffect(() => {
-    getAllTemplates();
-  }, []);
-
   return (
     <Grid container>
       <Grid container item alignItems="flex-end" justifyContent="space-between" p={4}>
         <Grid item xs={6}>
-          <Autocomplete
-            value={chosenEmail}
-            onChange={onSelectChange}
-            options={emailTemplates}
-            getOptionLabel={(option: IEmailObject) => option.title}
-            renderInput={(params) => (
-              <TextField {...params} variant="standard" label="Wybierz szablon e-mail" fullWidth />
-            )}
+          <EmailTemplatesAutocomplete
+            ref={myRef}
+            chosenEmail={chosenEmail}
+            setChosenEmail={setChosenEmail}
           />
         </Grid>
         <Grid item xs={1} pl={4}>

@@ -1,9 +1,7 @@
-import { Grid, Typography, TextField, Autocomplete, Card } from '@mui/material';
-import { useEffect, useState, useRef } from 'react';
-import getErrorMessage from '../../helpers/getErrorMessage';
-import { request } from '../../helpers/restClient';
-import useSnackbar from '../../snackbar/useSnackbar';
+import { Grid, Typography, TextField, Card } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { IEmailObject } from '../../ts/interfaces';
+import EmailTemplatesAutocomplete from '../email-manager/EmailTemplatesAutocomplete';
 import TextEditor from '../email-manager/TextEditor';
 
 interface PageProps {
@@ -21,35 +19,11 @@ const EmailTemplateStep = ({
   title,
   setTitle
 }: PageProps): JSX.Element => {
-  const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
   const [chosenEmail, setChosenEmail] = useState<IEmailObject | null>(null);
-
-  const snackbar = useSnackbar();
-
-  const getAllTemplates = async () => {
-    try {
-      const { data } = await request('get', '/getEmailTemplates');
-      setEmailTemplates(data);
-    } catch (error: any) {
-      snackbar.showMessage(
-        getErrorMessage(error, 'Nie można uzyskać listy szablonów e-mail. Spróbuj jeszcze raz'),
-        'error'
-      );
-      return;
-    }
-  };
-
-  const onSelectChange = (event: any, value: IEmailObject | null) => {
-    setChosenEmail(value);
-  };
 
   useEffect(() => {
     setContent(chosenEmail ? JSON.parse((chosenEmail as IEmailObject).content) : '');
   }, [chosenEmail]);
-
-  useEffect(() => {
-    getAllTemplates();
-  }, []);
 
   return (
     <>
@@ -69,19 +43,9 @@ const EmailTemplateStep = ({
               />
             </Grid>
             <Grid item xs={6} mt={2}>
-              <Autocomplete
-                value={chosenEmail}
-                onChange={onSelectChange}
-                options={emailTemplates}
-                getOptionLabel={(option: IEmailObject) => option.title}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Wybierz szablon e-mail"
-                    fullWidth
-                  />
-                )}
+              <EmailTemplatesAutocomplete
+                chosenEmail={chosenEmail}
+                setChosenEmail={setChosenEmail}
               />
             </Grid>
             <Grid item xs={6} pl={4}>

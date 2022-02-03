@@ -16,3 +16,11 @@ export interface IWorkshopTableObject {
   phone: string;
   surname: string;
 }
+
+export interface IBasicWorkshopObj {
+  unique_id?: number;
+  path: string;
+  name: string;
+  db_table_name: string;
+  email_template_id: number;
+}
