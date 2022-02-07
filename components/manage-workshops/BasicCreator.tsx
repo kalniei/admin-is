@@ -17,11 +17,17 @@ import { IBasicWorkshopObj, IEmailObject } from '../../ts/interfaces';
 import CheckIcon from '@mui/icons-material/Check';
 import EmailTemplatesAutocomplete from '../email-manager/EmailTemplatesAutocomplete';
 
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+import moment from 'moment-mini-ts';
+
 const defaultValues: IBasicWorkshopObj = {
   path: '',
   name: '',
   db_table_name: '',
-  email_template_id: 0
+  email_template_id: 0,
+  start_date: ''
 };
 
 const BasicCreator = (): JSX.Element => {
@@ -34,7 +40,8 @@ const BasicCreator = (): JSX.Element => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm({
     defaultValues: defaultValues
   });
@@ -45,9 +52,17 @@ const BasicCreator = (): JSX.Element => {
       return;
     }
     setIsProcessing(true);
+    const tempData = {
+      ...formData,
+      db_table_name: formData.db_table_name.includes('_warsztaty')
+        ? formData.db_table_name
+        : formData.db_table_name + '_warsztaty'
+    };
     try {
-      await request('post', '/addBasicWorkshop', formData);
+      await request('post', '/addBasicWorkshop', tempData);
       snackbar.showMessage('Nowy warsztat został utworzony!', 'success');
+      reset();
+      setChosenEmail(null);
     } catch (error: any) {
       snackbar.showMessage(
         getErrorMessage(error, 'Coś poszło nie tak podczas tworzenia nowego warsztatu'),
@@ -75,7 +90,7 @@ const BasicCreator = (): JSX.Element => {
           Podczas tworzenia nowych warsztatów jest wymagany wybór szablonu email
         </Typography>
       </Grid>
-      <Grid item xs={8} mt={4}>
+      <Grid item lg={8} xs={12} mt={4}>
         <form autoComplete="off">
           <Grid container spacing={2} justifyContent="space-between" alignItems="flex-end">
             <Grid item xs={12}>
@@ -144,7 +159,7 @@ const BasicCreator = (): JSX.Element => {
                   <TextField
                     variant="standard"
                     {...field}
-                    label="Nazwa tabeli do której będą wpadać warsztatowiczy"
+                    label="Nazwa tabeli do której będą wpadać warsztatowicze"
                     placeholder="Wpisz nazwe tabeli, używaj podkreśleń"
                     fullWidth
                     error={!!errors?.db_table_name}
@@ -163,6 +178,35 @@ const BasicCreator = (): JSX.Element => {
                 chosenEmail={chosenEmail}
                 setChosenEmail={setChosenEmail}
               />
+            </Grid>
+            <Grid item xs={6}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Controller
+                  name="start_date"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <DatePicker
+                      label="Data rozpoczęcia warsztatów"
+                      minDate={new Date()}
+                      inputFormat="dd/MM/yyyy"
+                      value={value}
+                      onChange={(newValue) => {
+                        onChange(newValue);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="standard"
+                          fullWidth
+                          InputLabelProps={{
+                            shrink: true
+                          }}
+                        />
+                      )}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
             </Grid>
           </Grid>
         </form>

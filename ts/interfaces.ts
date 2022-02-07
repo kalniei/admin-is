@@ -23,4 +23,5 @@ export interface IBasicWorkshopObj {
   name: string;
   db_table_name: string;
   email_template_id: number;
+  start_date: string;
 }
