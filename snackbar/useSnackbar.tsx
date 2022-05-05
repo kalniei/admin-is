@@ -4,7 +4,7 @@ import { SnackbarContext } from './snackbarState';
 const useSnackbar = () => {
   const { dispatch } = useContext(SnackbarContext);
   const snackbar = {
-    showMessage: function (message, severity) {
+    showMessage: function (message: string, severity: string) {
       const data = { message: message, severity: severity, isOpen: true };
       dispatch({
         type: 'SET_SNACKBAR',
