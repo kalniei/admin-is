@@ -54,16 +54,20 @@ const Home = (): JSX.Element => {
 
   const countPaid = (data: IWorkshopTableObject[]) => {
     const paidObject = {
-      '0': 0,
-      '1': 0
+      paid: 0,
+      notPaid: 0
     };
     data.forEach((x) => {
-      if (Number(x.paid)) {
-        paidObject['1'] = paidObject['1'] + 1;
+      console.log(x.paid);
+
+      if (Number(x.paid) > 0) {
+        paidObject['paid'] = paidObject['paid'] + 1;
       } else {
-        paidObject['0'] = paidObject['0'] + 1;
+        paidObject['notPaid'] = paidObject['notPaid'] + 1;
       }
     });
+    console.log(paidObject);
+
     return Object.values(paidObject);
   };
 
