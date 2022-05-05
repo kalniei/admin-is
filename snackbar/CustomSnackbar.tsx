@@ -10,7 +10,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const CustomSnackbar = (props): JSX.Element => {
+const CustomSnackbar = (props: any): JSX.Element => {
   const { state: state } = useContext(SnackbarContext);
   const snackbar = useSnackbar();
   const [open, setOpen] = useState<boolean>(state.isOpen);
