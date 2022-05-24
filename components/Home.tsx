@@ -29,6 +29,7 @@ export const generalData = {
 const Home = (): JSX.Element => {
   const [allUsersDataSet, setAllUsersDataSet] = useState<any>(null);
   const [wDrzwiSet, setWDrzwiSet] = useState<any>(null);
+  const [wWipSet, setWWipSet] = useState<any>(null);
   const [wSejfSet, setWSejfSet] = useState<any>(null);
   const [wTwierdzaSet, setWTwierdzaSet] = useState<any>(null);
   const [wKrolestwoSet, setWKrolestwoSet] = useState<any>(null);
@@ -86,8 +87,8 @@ const Home = (): JSX.Element => {
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
               'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
+              'rrgb(7, 110, 29)',
+              'rgb(233, 55, 23)',
               'rgba(255, 159, 64, 0.2)'
             ],
             borderWidth: 1
@@ -110,7 +111,7 @@ const Home = (): JSX.Element => {
           {
             label: 'Wszyscy użytkownicy',
             data: countPaid(data),
-            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+            backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
             borderWidth: 1
           }
         ]
@@ -120,18 +121,18 @@ const Home = (): JSX.Element => {
     }
   };
 
-  const getSejfUsers = async () => {
+  const getWIPUsers = async () => {
     try {
       const { data } = await request('post', '/getSingleTable', {
-        table_name: '2_SEJF_1_warsztaty'
+        table_name: '1_WIP_1_warsztaty'
       });
-      setWSejfSet({
+      setWWipSet({
         labels: ['Zapłacony', 'Nie Zapłacony'],
         datasets: [
           {
             label: 'Wszyscy użytkownicy',
             data: countPaid(data),
-            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+            backgroundColor: ['rgb(7, 110, 29)', 'rgb(233, 55, 23)'],
             borderWidth: 1
           }
         ]
@@ -141,54 +142,76 @@ const Home = (): JSX.Element => {
     }
   };
 
-  const getTwierdzaUsers = async () => {
-    try {
-      const { data } = await request('post', '/getSingleTable', {
-        table_name: '3_TWIERDZA_1_warsztaty'
-      });
-      setWTwierdzaSet({
-        labels: ['Zapłacony', 'Nie Zapłacony'],
-        datasets: [
-          {
-            label: 'Wszyscy użytkownicy',
-            data: countPaid(data),
-            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-            borderWidth: 1
-          }
-        ]
-      });
-    } catch (error: any) {
-      return;
-    }
-  };
+  // const getSejfUsers = async () => {
+  //   try {
+  //     const { data } = await request('post', '/getSingleTable', {
+  //       table_name: '2_SEJF_1_warsztaty'
+  //     });
+  //     setWSejfSet({
+  //       labels: ['Zapłacony', 'Nie Zapłacony'],
+  //       datasets: [
+  //         {
+  //           label: 'Wszyscy użytkownicy',
+  //           data: countPaid(data),
+  //           backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+  //           borderWidth: 1
+  //         }
+  //       ]
+  //     });
+  //   } catch (error: any) {
+  //     return;
+  //   }
+  // };
 
-  const getKrolestwoUsers = async () => {
-    try {
-      const { data } = await request('post', '/getSingleTable', {
-        table_name: '4_KROLESTWO_1_warsztaty'
-      });
-      setWKrolestwoSet({
-        labels: ['Zapłacony', 'Nie Zapłacony'],
-        datasets: [
-          {
-            label: 'Wszyscy użytkownicy',
-            data: countPaid(data),
-            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-            borderWidth: 1
-          }
-        ]
-      });
-    } catch (error: any) {
-      return;
-    }
-  };
+  // const getTwierdzaUsers = async () => {
+  //   try {
+  //     const { data } = await request('post', '/getSingleTable', {
+  //       table_name: '3_TWIERDZA_1_warsztaty'
+  //     });
+  //     setWTwierdzaSet({
+  //       labels: ['Zapłacony', 'Nie Zapłacony'],
+  //       datasets: [
+  //         {
+  //           label: 'Wszyscy użytkownicy',
+  //           data: countPaid(data),
+  //           backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+  //           borderWidth: 1
+  //         }
+  //       ]
+  //     });
+  //   } catch (error: any) {
+  //     return;
+  //   }
+  // };
+
+  // const getKrolestwoUsers = async () => {
+  //   try {
+  //     const { data } = await request('post', '/getSingleTable', {
+  //       table_name: '4_KROLESTWO_1_warsztaty'
+  //     });
+  //     setWKrolestwoSet({
+  //       labels: ['Zapłacony', 'Nie Zapłacony'],
+  //       datasets: [
+  //         {
+  //           label: 'Wszyscy użytkownicy',
+  //           data: countPaid(data),
+  //           backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+  //           borderWidth: 1
+  //         }
+  //       ]
+  //     });
+  //   } catch (error: any) {
+  //     return;
+  //   }
+  // };
 
   useEffect(() => {
     getAllUsers();
     getDrzwiUsers();
-    getSejfUsers();
-    getTwierdzaUsers();
-    getKrolestwoUsers();
+    getWIPUsers();
+    // getSejfUsers();
+    // getTwierdzaUsers();
+    // getKrolestwoUsers();
   }, []);
 
   return (
@@ -213,7 +236,7 @@ const Home = (): JSX.Element => {
               <Doughnut data={generalData} />
             </Card>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={6}>
             <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
               <Typography variant="h6" textAlign="center">
                 Drzwi Do Impor 1
@@ -226,45 +249,64 @@ const Home = (): JSX.Element => {
               )}
             </Card>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={6}>
             <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
               <Typography variant="h6" textAlign="center">
-                Impro Sejf
+                Weekendowa Impro Piguła
               </Typography>
 
-              {!wSejfSet ? (
+              {!wWipSet ? (
                 <CircularProgress size={150} sx={{ mt: 11.5 }} />
               ) : (
-                <Doughnut data={wSejfSet} />
+                <Doughnut data={wWipSet} />
               )}
             </Card>
           </Grid>
-          <Grid item xs={3}>
-            <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
-              <Typography variant="h6" textAlign="center">
-                Impro Twierdza
-              </Typography>
+          {1 !== 1 && (
+            <Grid item xs={3}>
+              <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
+                <Typography variant="h6" textAlign="center">
+                  Impro Sejf
+                </Typography>
 
-              {!wTwierdzaSet ? (
-                <CircularProgress size={150} sx={{ mt: 11.5 }} />
-              ) : (
-                <Doughnut data={wTwierdzaSet} />
-              )}
-            </Card>
-          </Grid>
-          <Grid item xs={3}>
-            <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
-              <Typography variant="h6" textAlign="center">
-                Impro Królestwo
-              </Typography>
+                {!wSejfSet ? (
+                  <CircularProgress size={150} sx={{ mt: 11.5 }} />
+                ) : (
+                  <Doughnut data={wSejfSet} />
+                )}
+              </Card>
+            </Grid>
+          )}
+          {1 !== 1 && (
+            <Grid item xs={3}>
+              <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
+                <Typography variant="h6" textAlign="center">
+                  Impro Twierdza
+                </Typography>
 
-              {!wKrolestwoSet ? (
-                <CircularProgress size={150} sx={{ mt: 11.5 }} />
-              ) : (
-                <Doughnut data={wKrolestwoSet} />
-              )}
-            </Card>
-          </Grid>
+                {!wTwierdzaSet ? (
+                  <CircularProgress size={150} sx={{ mt: 11.5 }} />
+                ) : (
+                  <Doughnut data={wTwierdzaSet} />
+                )}
+              </Card>
+            </Grid>
+          )}
+          {1 !== 1 && (
+            <Grid item xs={3}>
+              <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
+                <Typography variant="h6" textAlign="center">
+                  Impro Królestwo
+                </Typography>
+
+                {!wKrolestwoSet ? (
+                  <CircularProgress size={150} sx={{ mt: 11.5 }} />
+                ) : (
+                  <Doughnut data={wKrolestwoSet} />
+                )}
+              </Card>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>
