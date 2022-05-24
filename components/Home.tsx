@@ -87,8 +87,8 @@ const Home = (): JSX.Element => {
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
               'rgba(255, 206, 86, 0.2)',
-              'rrgb(7, 110, 29)',
-              'rgb(233, 55, 23)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
               'rgba(255, 159, 64, 0.2)'
             ],
             borderWidth: 1
@@ -111,7 +111,7 @@ const Home = (): JSX.Element => {
           {
             label: 'Wszyscy użytkownicy',
             data: countPaid(data),
-            backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+            backgroundColor: ['rgb(7, 110, 29)', 'rgb(235, 72, 44)'],
             borderWidth: 1
           }
         ]
@@ -132,7 +132,7 @@ const Home = (): JSX.Element => {
           {
             label: 'Wszyscy użytkownicy',
             data: countPaid(data),
-            backgroundColor: ['rgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+            backgroundColor: ['rgb(7, 110, 29)', 'rgb(235, 72, 44)'],
             borderWidth: 1
           }
         ]
@@ -153,7 +153,7 @@ const Home = (): JSX.Element => {
   //         {
   //           label: 'Wszyscy użytkownicy',
   //           data: countPaid(data),
-  //           backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+  //           backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
   //           borderWidth: 1
   //         }
   //       ]
@@ -174,7 +174,7 @@ const Home = (): JSX.Element => {
   //         {
   //           label: 'Wszyscy użytkownicy',
   //           data: countPaid(data),
-  //           backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+  //           backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
   //           borderWidth: 1
   //         }
   //       ]
@@ -195,7 +195,7 @@ const Home = (): JSX.Element => {
   //         {
   //           label: 'Wszyscy użytkownicy',
   //           data: countPaid(data),
-  //           backgroundColor: ['rrgb(7, 110, 29)', 'rgb(233, 55, 23)'],
+  //           backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
   //           borderWidth: 1
   //         }
   //       ]
@@ -236,7 +236,7 @@ const Home = (): JSX.Element => {
               <Doughnut data={generalData} />
             </Card>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} mt={4}>
             <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
               <Typography variant="h6" textAlign="center">
                 Drzwi Do Impor 1
@@ -249,7 +249,7 @@ const Home = (): JSX.Element => {
               )}
             </Card>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} mt={4}>
             <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>
               <Typography variant="h6" textAlign="center">
                 Weekendowa Impro Piguła
