@@ -29,7 +29,7 @@ const EmailChoiseStep = ({ hidden, setSelected }: PageProps): JSX.Element => {
   const [tableInfo, setTableInfo] = useState<IWorkshopTableObject[]>([]);
   const [chosenWorkshop, setChosenWorkshop] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(20);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
   const [checked, setChecked] = useState(true);
 

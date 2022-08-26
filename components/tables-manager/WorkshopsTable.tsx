@@ -26,7 +26,7 @@ const WorkshopsTable = ({
   setParentSelected,
   chosenWorkshop
 }: PageProps): JSX.Element => {
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(20);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   const [rows, setRows] = useState(tableInfo);
