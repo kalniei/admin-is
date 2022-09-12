@@ -63,7 +63,7 @@ const AddTemplateDialog = ({
       <DialogContent>
         <TextField
           required
-          label="Email Name"
+          label="Nazwa robocza emailu"
           fullWidth
           variant="standard"
           value={title}

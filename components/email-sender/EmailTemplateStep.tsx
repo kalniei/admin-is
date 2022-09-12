@@ -42,13 +42,13 @@ const EmailTemplateStep = ({
                 }}
               />
             </Grid>
-            <Grid item xs={6} mt={2}>
+            <Grid item xs={12} sm={6} mt={2}>
               <EmailTemplatesAutocomplete
                 chosenEmail={chosenEmail}
                 setChosenEmail={setChosenEmail}
               />
             </Grid>
-            <Grid item xs={6} pl={4}>
+            <Grid item xs={12} sm={6} sx={{ pl: { xs: 0, sm: 4 }, mt: { xs: 2, sm: 0 } }}>
               <Typography>lub utwórz nowy: </Typography>
             </Grid>
           </Grid>

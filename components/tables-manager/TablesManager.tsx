@@ -11,6 +11,20 @@ import DeleteConfirmationModal from '../common/DeleteConfirmationModal';
 import TransferModal from './TransferModal';
 import getErrorMessage from '../../helpers/getErrorMessage';
 import AddNewModal from './AddNewModal';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  commonButton: {
+    marginLeft: 0,
+    marginTop: '1em',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: '1em',
+      marginTop: 0,
+      width: 'auto'
+    }
+  }
+}));
 
 const TablesManager = (): JSX.Element => {
   const [workshpsArr, setWorkshopsArr] = useState<string[]>([]);
@@ -25,6 +39,7 @@ const TablesManager = (): JSX.Element => {
   const [openAddNewDialog, setOpenAddNewDialog] = useState<boolean>(false);
 
   const snackbar = useSnackbar();
+  const classes = useStyles();
 
   const getAllWorkshops = async () => {
     try {
@@ -102,7 +117,7 @@ const TablesManager = (): JSX.Element => {
     <Grid container item alignItems="flex-end" justifyContent="space-between" p={4}>
       {isLoading && <LinearProgress />}
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <Autocomplete
           value={chosenWorkshop}
           onChange={(e, val) => setChosenWorkshop(val)}
@@ -112,9 +127,9 @@ const TablesManager = (): JSX.Element => {
           )}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <Button
-          sx={{ ml: 2 }}
+          className={classes.commonButton}
           onClick={() => setOpenAddNewDialog(true)}
           variant="outlined"
           disabled={!chosenWorkshop}
@@ -124,7 +139,7 @@ const TablesManager = (): JSX.Element => {
           Dodaj nowego użytkownika
         </Button>
         <Button
-          sx={{ ml: 2 }}
+          className={classes.commonButton}
           onClick={() => setOpenTransferDialog(true)}
           variant="outlined"
           disabled={!chosenWorkshop || selected.length === 0}
@@ -134,7 +149,7 @@ const TablesManager = (): JSX.Element => {
           przenieś
         </Button>
         <Button
-          sx={{ ml: 2 }}
+          className={classes.commonButton}
           onClick={() => setOpenAlertDialog(true)}
           variant="outlined"
           disabled={!chosenWorkshop || selected.length === 0}

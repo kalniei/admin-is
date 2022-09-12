@@ -13,7 +13,9 @@ import {
 } from '@mui/x-data-grid';
 import GridCellExpand from './GridCellExpand';
 import getErrorMessage from '../../helpers/getErrorMessage';
-import { AxiosError } from 'axios';
+import { useTheme } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
+import { CustomToolbar } from '../common/CustomGridComponents';
 
 interface PageProps {
   tableInfo: IWorkshopTableObject[];
@@ -28,8 +30,10 @@ const WorkshopsTable = ({
 }: PageProps): JSX.Element => {
   const [pageSize, setPageSize] = useState<number>(20);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
-
   const [rows, setRows] = useState(tableInfo);
+
+  const theme = useTheme();
+  const isDesktopScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
   const snackbar = useSnackbar();
 
@@ -50,30 +54,41 @@ const WorkshopsTable = ({
       headerName: 'Nazwisko',
       flex: 1,
       editable: true,
-      renderCell: renderCellExpand
+      renderCell: renderCellExpand,
+      hideable: false
     },
-    { field: 'mail', headerName: 'Email', flex: 2.5, editable: true, renderCell: renderCellExpand },
+    {
+      field: 'mail',
+      headerName: 'Email',
+      flex: 2.5,
+      editable: true,
+      renderCell: renderCellExpand,
+      hide: !isDesktopScreen
+    },
     {
       field: 'phone',
       headerName: 'Telefon',
       flex: 1,
-      editable: true
+      editable: true,
+      hide: !isDesktopScreen
     },
     {
       field: 'date',
       headerName: 'Data',
       flex: 1,
-      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM')
+      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM'),
+      hide: !isDesktopScreen
     },
-    { field: 'level', headerName: 'Poziom', flex: 0.2, editable: true },
+    { field: 'level', headerName: 'Poziom', flex: 0.2, editable: true, hide: !isDesktopScreen },
     {
       field: 'notes',
       headerName: 'Notatki',
       flex: 1,
       editable: true,
-      renderCell: renderCellExpand
+      renderCell: renderCellExpand,
+      hide: !isDesktopScreen
     },
-    { field: 'paid', headerName: 'Zapłacone', flex: 0.2, editable: true }
+    { field: 'paid', headerName: 'Zapłacone', flex: 0.2, editable: true, hide: !isDesktopScreen }
   ];
 
   const handleCellEditCommit = async (params: GridCellEditCommitParams) => {
@@ -128,6 +143,9 @@ const WorkshopsTable = ({
         }}
         selectionModel={selectionModel}
         onCellEditCommit={handleCellEditCommit}
+        components={{
+          Toolbar: CustomToolbar
+        }}
       />
     </Grid>
   );

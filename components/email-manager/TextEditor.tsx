@@ -23,7 +23,7 @@ const TextEditor = ({ parentContent, changeParentContent }: PageProps): JSX.Elem
   }, [parentContent]);
 
   return (
-    <Grid container item alignItems="flex-start" p={4}>
+    <Grid container item alignItems="flex-start" sx={{ padding: { xs: '2em 0', sm: '4em' } }}>
       <Grid item xs={12}>
         <SunEditor
           defaultValue={content}

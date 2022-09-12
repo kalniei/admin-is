@@ -59,15 +59,12 @@ const Home = (): JSX.Element => {
       notPaid: 0
     };
     data.forEach((x) => {
-      console.log(x.paid);
-
       if (Number(x.paid) > 0) {
         paidObject['paid'] = paidObject['paid'] + 1;
       } else {
         paidObject['notPaid'] = paidObject['notPaid'] + 1;
       }
     });
-    console.log(paidObject);
 
     return Object.values(paidObject);
   };
@@ -215,9 +212,9 @@ const Home = (): JSX.Element => {
   }, []);
 
   return (
-    <Grid container justifyContent="center" m={4}>
+    <Grid container justifyContent="center" m={2}>
       <Grid item xs={12}>
-        <Typography variant="h4">Wellcome to Impro Silesia Admin Panel</Typography>
+        <Typography variant="h4">Impro Silesia Admin Panel</Typography>
         <Grid container justifyContent="center">
           <Grid item xs={6} textAlign="center">
             <Card sx={{ p: 4, maxWidth: '500px', margin: '0 auto' }}>

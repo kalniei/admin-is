@@ -55,20 +55,28 @@ const EmailManager = (): JSX.Element => {
   return (
     <Grid container>
       <Grid container item alignItems="flex-end" justifyContent="space-between" p={4}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <EmailTemplatesAutocomplete
             ref={myRef}
             chosenEmail={chosenEmail}
             setChosenEmail={setChosenEmail}
           />
         </Grid>
-        <Grid item xs={1} pl={4}>
-          <Button variant="outlined" onClick={saveTemplate}>
+        <Grid item xs={12} sm={1} sx={{ pl: { xs: 0, sm: 4 } }}>
+          <Button
+            variant="outlined"
+            onClick={saveTemplate}
+            sx={{ width: { xs: '100%', sm: 'auto' }, mt: { xs: 1, sm: 0 } }}
+          >
             Zapisz
           </Button>
         </Grid>
-        <Grid item xs={5} textAlign="right">
-          <Button variant="outlined" onClick={() => setOpenDialog(true)}>
+        <Grid item xs={12} sm={5} textAlign="right">
+          <Button
+            variant="outlined"
+            onClick={() => setOpenDialog(true)}
+            sx={{ width: { xs: '100%', sm: 'auto' }, mt: { xs: 1, sm: 0 } }}
+          >
             Dodaj nowy szablon
           </Button>
         </Grid>

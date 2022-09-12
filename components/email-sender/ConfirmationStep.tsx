@@ -20,7 +20,7 @@ const ConfirmationStep = ({
       {!hidden && (
         <Card>
           <Grid container item alignItems="flex-start" justifyContent="space-between" p={4}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography fontWeight={600} color={'#020260'}>
                 Na te adresy wyślemy e-maile:
               </Typography>
@@ -40,7 +40,7 @@ const ConfirmationStep = ({
                 </Typography>
               ))}
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} sx={{ mt: { xs: 2, sm: 0 } }}>
               <Typography mb={2} fontWeight={600} color={'#020260'}>
                 Tak będzie wyglądał ten e-mail:
               </Typography>

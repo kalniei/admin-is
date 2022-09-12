@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Button, CircularProgress, Grid, Step, StepLabel, Stepper } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Step,
+  StepLabel,
+  Stepper,
+  useMediaQuery
+} from '@mui/material';
 import EmailTemplateStep from './EmailTemplateStep';
 import EmailChoiseStep from './EmailChoiseStep';
 import ConfirmationStep from './ConfirmationStep';
@@ -7,6 +15,7 @@ import useSnackbar from '../../snackbar/useSnackbar';
 import { request } from '../../helpers/restClient';
 import getErrorMessage from '../../helpers/getErrorMessage';
 import router from 'next/dist/client/router';
+import { useTheme } from '@material-ui/core/styles';
 
 const steps = [
   {
@@ -33,6 +42,9 @@ const EmailStepper = () => {
   const [progressEmails, setProgressEmails] = useState<{ [key: string]: boolean }>({});
 
   const snackbar = useSnackbar();
+
+  const theme = useTheme();
+  const isDesktopScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) return;
@@ -106,7 +118,11 @@ const EmailStepper = () => {
   return (
     <Grid item xs={12}>
       <Grid container justifyContent="center">
-        <Stepper activeStep={activeStep} sx={{ width: '100%' }}>
+        <Stepper
+          activeStep={activeStep}
+          sx={{ width: '100%' }}
+          orientation={isDesktopScreen ? 'horizontal' : 'vertical'}
+        >
           {steps.map((step) => (
             <Step key={step.id}>
               <StepLabel>{step.name}</StepLabel>
