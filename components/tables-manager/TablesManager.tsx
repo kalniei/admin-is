@@ -114,7 +114,7 @@ const TablesManager = (): JSX.Element => {
   }, []);
 
   return (
-    <Grid container item alignItems="flex-end" justifyContent="space-between" p={4}>
+    <Grid container item alignItems="flex-end" justifyContent="space-between" p={2} pr={0}>
       {isLoading && <LinearProgress />}
 
       <Grid item xs={12} sm={6}>

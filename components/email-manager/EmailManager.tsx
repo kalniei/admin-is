@@ -54,7 +54,7 @@ const EmailManager = (): JSX.Element => {
 
   return (
     <Grid container>
-      <Grid container item alignItems="flex-end" justifyContent="space-between" p={4}>
+      <Grid container item alignItems="flex-end" justifyContent="space-between" p={2} pr={0}>
         <Grid item xs={12} sm={6}>
           <EmailTemplatesAutocomplete
             ref={myRef}
@@ -81,7 +81,9 @@ const EmailManager = (): JSX.Element => {
           </Button>
         </Grid>
       </Grid>
-      {content && <TextEditor parentContent={content} changeParentContent={setContent} />}
+      <Grid item xs={12} sx={{ pl: { xs: 2, sm: 2 } }}>
+        {content && <TextEditor parentContent={content} changeParentContent={setContent} />}
+      </Grid>
 
       {openDialog && (
         <AddTemplateDialog

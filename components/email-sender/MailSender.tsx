@@ -4,7 +4,7 @@ import EmailStepper from './EmailStepper';
 
 const MailSender = (): JSX.Element => {
   return (
-    <Grid container sx={{ padding: { xs: '2em', sm: '8em' } }} justifyContent="center">
+    <Grid container sx={{ padding: { xs: '2em 1em 2em 2em', sm: '8em' } }} justifyContent="center">
       <EmailStepper />
     </Grid>
   );
