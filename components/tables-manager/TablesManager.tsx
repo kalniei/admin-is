@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TablesManager = (): JSX.Element => {
+  const snackbar = useSnackbar();
+  const classes = useStyles();
+
   const [workshpsArr, setWorkshopsArr] = useState<string[]>([]);
   const [tableInfo, setTableInfo] = useState<IWorkshopTableObject[]>([]);
   const [chosenWorkshop, setChosenWorkshop] = useState<string | null>(null);
@@ -37,9 +40,6 @@ const TablesManager = (): JSX.Element => {
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [openTransferDialog, setOpenTransferDialog] = useState<boolean>(false);
   const [openAddNewDialog, setOpenAddNewDialog] = useState<boolean>(false);
-
-  const snackbar = useSnackbar();
-  const classes = useStyles();
 
   const getAllWorkshops = async () => {
     try {

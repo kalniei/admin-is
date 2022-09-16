@@ -1,1 +1,1 @@
-export type TTrainerType = 'lew' | 'lwica' | 'tygrys';
+export type TEventTypes = 'event-custom' | 'openmic' | 'ppi' | 'workshop';

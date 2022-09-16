@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
-import { IWorkshopTableObject } from '../../ts/interfaces';
+import { IEventObj } from '../../ts/interfaces';
 import moment from 'moment-mini-ts';
 import {
   DataGrid,
@@ -11,23 +11,20 @@ import {
   GridRenderCellParams,
   GridSelectionModel
 } from '@mui/x-data-grid';
-import GridCellExpand from './GridCellExpand';
 import getErrorMessage from '../../helpers/getErrorMessage';
 import { useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { CustomToolbar } from '../common/CustomGridComponents';
+import GridCellExpand from '../tables-manager/GridCellExpand';
+import EventsObj from '../../helpers/Events';
+import { TEventTypes } from '../../ts/types';
 
 interface PageProps {
-  tableInfo: IWorkshopTableObject[];
-  setParentSelected: (val: IWorkshopTableObject[]) => void;
-  chosenWorkshop: string;
+  tableInfo: IEventObj[];
+  setParentSelected: (val: IEventObj[]) => void;
 }
 
-const WorkshopsTable = ({
-  tableInfo,
-  setParentSelected,
-  chosenWorkshop
-}: PageProps): JSX.Element => {
+const EventsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Element => {
   const [pageSize, setPageSize] = useState<number>(20);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
   const [rows, setRows] = useState(tableInfo);
@@ -43,68 +40,101 @@ const WorkshopsTable = ({
 
   const columns: GridColDef[] = [
     {
-      field: 'name',
-      headerName: 'Imię',
+      field: 'title',
+      headerName: 'Nazwa',
       flex: 1,
-      editable: true,
-      renderCell: renderCellExpand,
-      hide: !isDesktopScreen
-    },
-    {
-      field: 'surname',
-      headerName: 'Nazwisko',
-      flex: 1,
-      editable: true,
-      renderCell: renderCellExpand,
-      hideable: false
-    },
-    {
-      field: 'mail',
-      headerName: 'Email',
-      flex: 2.5,
       editable: true,
       renderCell: renderCellExpand
     },
     {
-      field: 'phone',
-      headerName: 'Telefon',
+      field: 'customClass',
+      headerName: 'Rodzaj',
       flex: 1,
-      editable: true
+      editable: true,
+      valueFormatter: (params) => EventsObj[params?.value as TEventTypes]
     },
+
     {
       field: 'date',
       headerName: 'Data',
       flex: 1,
-      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM'),
+      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY')
+    },
+    {
+      field: 'time',
+      headerName: 'Czas',
+      flex: 1,
+      editable: true,
       hide: !isDesktopScreen
     },
-    { field: 'level', headerName: 'Poziom', flex: 0.2, editable: true, hide: !isDesktopScreen },
     {
-      field: 'notes',
-      headerName: 'Notatki',
+      field: 'description',
+      headerName: 'Opis',
+      flex: 1,
+      editable: true,
+      renderCell: renderCellExpand,
+      hide: true
+    },
+    {
+      field: 'price',
+      headerName: 'Cena',
+      flex: 1,
+      renderCell: renderCellExpand,
+      editable: true,
+      hide: !isDesktopScreen
+    },
+    {
+      field: 'place',
+      headerName: 'Miejsce',
       flex: 1,
       editable: true,
       renderCell: renderCellExpand,
       hide: !isDesktopScreen
     },
-    { field: 'paid', headerName: 'Zapłacone', flex: 0.2, editable: true }
+    {
+      field: 'link',
+      headerName: 'Link',
+      flex: 1,
+      renderCell: renderCellExpand,
+      editable: true,
+      hide: !isDesktopScreen
+    },
+    {
+      field: 'linkTitle',
+      headerName: 'Tytuł Linka',
+      flex: 1,
+      editable: true,
+      renderCell: renderCellExpand,
+      hide: !isDesktopScreen
+    },
+    {
+      field: 'aditionalLink',
+      headerName: 'Dodatkowy Link',
+      flex: 1,
+      editable: true,
+      renderCell: renderCellExpand,
+      hide: !isDesktopScreen
+    }
   ];
 
   const handleCellEditCommit = async (params: GridCellEditCommitParams) => {
+    console.log(params);
+
     if (!params.id || !params.field || !params.value) return;
     try {
-      const { data } = await request('post', '/updateWorkshopRow', {
-        table_name: chosenWorkshop,
+      const { data } = await request('post', '/updateEvent', {
         id: params.id,
         data: {
           [params.field]: params.value
         }
       });
       setRows((prev) =>
-        prev.map((row) => (row.mail === params.id ? { ...row, [params.field]: params.value } : row))
+        prev.map((row) =>
+          row.unique_ID === params.id ? { ...row, [params.field]: params.value } : row
+        )
       );
       setSelectionModel([]);
-      snackbar.showMessage('Edytowany użytkownik o identyfikatorze: ' + params.id, 'success');
+      snackbar.showMessage('Edytowany event o identyfikatorze: ' + params.id, 'success');
     } catch (error: any) {
       snackbar.showMessage(
         getErrorMessage(error, 'Coś poszło nie tak podczas edycji wierszy'),
@@ -116,7 +146,7 @@ const WorkshopsTable = ({
   };
 
   useEffect(() => {
-    const tempArr = rows.filter((x: any) => selectionModel.includes(x.mail));
+    const tempArr = rows.filter((x: any) => selectionModel.includes(x.unique_ID));
     setParentSelected(tempArr);
   }, [selectionModel]);
 
@@ -130,7 +160,7 @@ const WorkshopsTable = ({
         autoHeight={true}
         rows={rows}
         columns={columns}
-        getRowId={(row) => row['mail']}
+        getRowId={(row) => row['unique_ID']}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20, 100, 1000]}
@@ -150,4 +180,4 @@ const WorkshopsTable = ({
   );
 };
 
-export default WorkshopsTable;
+export default EventsTable;

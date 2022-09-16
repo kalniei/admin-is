@@ -27,6 +27,10 @@ export function getNavArr() {
     {
       text: 'Zarządzanie rozrszerzonymi warsztatami',
       path: '/advanced-manager'
+    },
+    {
+      text: 'Wydarzenia',
+      path: '/events-manager'
     }
   ];
 }
