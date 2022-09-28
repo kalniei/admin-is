@@ -7,6 +7,7 @@ import { IEventObj } from '../../ts/interfaces';
 import EventsTable from './EventsTable';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import CopyIcon from '@mui/icons-material/ContentCopy';
 
 import DeleteConfirmationModal from '../common/DeleteConfirmationModal';
 import AddNewEventModal from './AddNewEventModal';
@@ -20,6 +21,7 @@ const EventsManager = (): JSX.Element => {
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [openAddNewDialog, setOpenAddNewDialog] = useState<boolean>(false);
+  const [eventToCopy, setEventToCopy] = useState<IEventObj | null>(null);
 
   const getAllEvents = async () => {
     try {
@@ -57,6 +59,15 @@ const EventsManager = (): JSX.Element => {
     }
   };
 
+  const copyEvent = () => {
+    if (selected.length === 0) {
+      snackbar.showMessage('Wybierz wydarzenie które chcesz skopijować', 'error');
+      return;
+    }
+    setEventToCopy(selected[0]);
+    setOpenAddNewDialog(true);
+  };
+
   useEffect(() => {
     setIsLoading(true);
     getAllEvents();
@@ -70,6 +81,23 @@ const EventsManager = (): JSX.Element => {
         <Button onClick={() => setOpenAddNewDialog(true)} variant="outlined" color="success">
           <AddIcon sx={{ mr: 1 }} />
           Dodaj nowe wydarzenie
+        </Button>
+      </Grid>
+
+      <Grid
+        item
+        xs={12}
+        sm={3}
+        sx={{ mt: { xs: 2, sm: 0 }, textAlign: { xs: 'left', sm: 'right' } }}
+      >
+        <Button
+          onClick={copyEvent}
+          variant="outlined"
+          disabled={selected.length === 0}
+          color="success"
+        >
+          <CopyIcon sx={{ mr: 1 }} />
+          Kopiuj
         </Button>
       </Grid>
 
@@ -99,8 +127,12 @@ const EventsManager = (): JSX.Element => {
       {openAddNewDialog && (
         <AddNewEventModal
           open={openAddNewDialog}
-          handleClose={() => setOpenAddNewDialog(false)}
+          handleClose={() => {
+            setOpenAddNewDialog(false);
+            setEventToCopy(null);
+          }}
           onConfirm={getAllEvents}
+          eventToCopy={eventToCopy}
         />
       )}
 

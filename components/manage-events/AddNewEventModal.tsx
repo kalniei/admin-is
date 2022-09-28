@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Radio
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import getErrorMessage from '../../helpers/getErrorMessage';
 import { request } from '../../helpers/restClient';
 import useSnackbar from '../../snackbar/useSnackbar';
@@ -24,6 +24,7 @@ interface PageProps {
   handleClose: () => void;
   open: boolean;
   onConfirm: () => void;
+  eventToCopy: IEventObj | null;
 }
 
 const defaultValues: IEventObj = {
@@ -39,7 +40,12 @@ const defaultValues: IEventObj = {
   aditionalLink: ''
 };
 
-const AddNewEventModal = ({ handleClose, open, onConfirm }: PageProps): JSX.Element => {
+const AddNewEventModal = ({
+  handleClose,
+  open,
+  onConfirm,
+  eventToCopy
+}: PageProps): JSX.Element => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const snackbar = useSnackbar();
@@ -47,6 +53,7 @@ const AddNewEventModal = ({ handleClose, open, onConfirm }: PageProps): JSX.Elem
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm({
     defaultValues: defaultValues
@@ -71,6 +78,11 @@ const AddNewEventModal = ({ handleClose, open, onConfirm }: PageProps): JSX.Elem
       setIsProcessing(false);
     }
   };
+
+  useEffect(() => {
+    if (!eventToCopy) return;
+    reset({ ...eventToCopy, unique_ID: undefined });
+  }, [eventToCopy]);
 
   return (
     <Dialog maxWidth={'lg'} fullWidth={true} open={open}>
