@@ -102,7 +102,7 @@ const EventsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Element =
     },
     {
       field: 'linkTitle',
-      headerName: 'Tytuł Linka',
+      headerName: 'Tytuł Dodatk. Linka',
       flex: 1,
       editable: true,
       renderCell: renderCellExpand,
@@ -119,9 +119,7 @@ const EventsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Element =
   ];
 
   const handleCellEditCommit = async (params: GridCellEditCommitParams) => {
-    console.log(params);
-
-    if (!params.id || !params.field || !params.value) return;
+    if (!params.id || !params.field) return;
     try {
       const { data } = await request('post', '/updateEvent', {
         id: params.id,

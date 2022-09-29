@@ -221,7 +221,7 @@ const AddNewEventModal = ({
             <Grid item xs={12}>
               <Controller
                 control={control}
-                name="link"
+                name="aditionalLink"
                 render={({ field }) => (
                   <TextField
                     variant="standard"
@@ -257,7 +257,7 @@ const AddNewEventModal = ({
             <Grid item xs={12}>
               <Controller
                 control={control}
-                name="aditionalLink"
+                name="link"
                 render={({ field }) => (
                   <TextField
                     variant="standard"
