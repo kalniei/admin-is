@@ -59,7 +59,7 @@ const EventsTable = ({ tableInfo, setParentSelected }: PageProps): JSX.Element =
       headerName: 'Data',
       flex: 1,
       editable: true,
-      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY')
+      valueFormatter: (params) => moment(params?.value as string).format('YYYY/MM/DD')
     },
     {
       field: 'time',
