@@ -25,7 +25,7 @@ export function getNavArr() {
       path: '/basic-manager'
     },
     {
-      text: 'Zarządzanie rozrszerzonymi warsztatami',
+      text: 'Zarządzanie dodatkowymi warsztatami',
       path: '/advanced-manager'
     },
     {

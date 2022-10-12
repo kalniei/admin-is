@@ -26,6 +26,12 @@ export interface IBasicWorkshopObj {
   db_table_name: string;
   email_template_id: number;
   start_date: string;
+  workshop_dates: string[];
+  price_sale: number;
+  price_normal: number;
+  price_date: string;
+  level: 1 | 2 | 3 | 4;
+  is_active: boolean;
 }
 
 export interface IEventObj {

@@ -8,9 +8,10 @@ import getErrorMessage from '../../helpers/getErrorMessage';
 interface PageProps {
   chosenEmail: IEmailObject | null;
   setChosenEmail: (val: IEmailObject | null) => void;
+  emailIdToSet?: number;
 }
 const EmailTemplatesAutocomplete = React.forwardRef(
-  ({ chosenEmail, setChosenEmail }: PageProps, ref?) => {
+  ({ chosenEmail, setChosenEmail, emailIdToSet }: PageProps, ref?) => {
     const [emailTemplates, setEmailTemplates] = useState<IEmailObject[]>([]);
     const snackbar = useSnackbar();
 
@@ -40,6 +41,13 @@ const EmailTemplatesAutocomplete = React.forwardRef(
     useEffect(() => {
       getAllTemplates();
     }, []);
+
+    useEffect(() => {
+      if (!emailTemplates.length || !emailIdToSet) return;
+      setChosenEmail(
+        emailTemplates.find((x: IEmailObject) => x.unique_id === emailIdToSet) || null
+      );
+    }, [emailTemplates, emailIdToSet]);
 
     return (
       <Autocomplete

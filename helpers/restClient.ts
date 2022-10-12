@@ -6,8 +6,8 @@ export const request = (method: any, endpoint: string, payload?: any): Promise<A
   return new Promise((resolve, reject) => {
     restClient({
       method: method.toUpperCase(),
-      // url: process.env.NEXT_PUBLIC_API_URL_LOCAL + endpoint,
-      url: process.env.NEXT_PUBLIC_API_URL + endpoint,
+      url: process.env.NEXT_PUBLIC_API_URL_LOCAL + endpoint,
+      // url: process.env.NEXT_PUBLIC_API_URL + endpoint,
       data: payload ? payload : undefined
     })
       .then((response: AxiosResponse) => resolve(response?.data))

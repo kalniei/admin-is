@@ -27,7 +27,6 @@ const EventsManager = (): JSX.Element => {
     try {
       const { data } = await request('get', '/getEventTable');
       setEventsTable(data);
-      console.log(data);
     } catch (error: any) {
       snackbar.showMessage(
         getErrorMessage(error, 'Nie udało się pobrać wydarzenia. Spróbuj jeszcze raz'),

@@ -44,3 +44,6 @@ a {
   position: absolute;
   z-index: 10;
 }
+
+.rmdp-container {
+  display: block !important;}
