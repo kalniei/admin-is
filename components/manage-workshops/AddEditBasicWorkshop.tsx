@@ -38,12 +38,15 @@ const defaultValues: IBasicWorkshopObj = {
   name: '',
   db_table_name: '',
   email_template_id: 0,
-  start_date: '',
+  day_of_week: '',
   workshop_dates: [],
+  duration: 0,
+  time: '',
   price_sale: 0,
   price_normal: 0,
   price_date: '',
   level: 1,
+  additional_info: '',
   is_active: true
 };
 
@@ -208,35 +211,6 @@ const AddEditBasicWorkshop = ({
           />
         </Grid>
         <Grid item xs={12}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Controller
-              name="start_date"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <DatePicker
-                  label="Data rozpoczęcia warsztatów"
-                  minDate={new Date()}
-                  inputFormat="dd/MM/yyyy"
-                  value={moment(value, 'DD/MM/YYYY').toDate()}
-                  onChange={(newValue: any) => {
-                    onChange(moment(newValue).format('DD/MM/YYYY'));
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      fullWidth
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                    />
-                  )}
-                />
-              )}
-            />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={12}>
           <Controller
             control={control}
             name="workshop_dates"
@@ -364,6 +338,79 @@ const AddEditBasicWorkshop = ({
             />
           </LocalizationProvider>
         </Grid>
+        <Grid item xs={6}>
+          <Controller
+            control={control}
+            name="duration"
+            rules={{
+              required: { value: true, message: 'Wymagany' }
+            }}
+            render={({ field }) => (
+              <TextField
+                variant="standard"
+                {...field}
+                label="Ile trwaja warsztaty"
+                type="number"
+                placeholder="0"
+                fullWidth
+                required
+                error={!!errors?.duration}
+                helperText={errors?.duration?.message}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">h</InputAdornment>
+                }}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            control={control}
+            name="time"
+            rules={{
+              required: { value: true, message: 'Wymagany' }
+            }}
+            render={({ field }) => (
+              <TextField
+                variant="standard"
+                {...field}
+                label="Godziny w których odbywają się warsztaty ( textem ) "
+                placeholder="n/a"
+                fullWidth
+                required
+                error={!!errors?.time}
+                helperText={errors?.time?.message}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            control={control}
+            name="day_of_week"
+            rules={{
+              required: { value: true, message: 'Wymagany' }
+            }}
+            render={({ field }) => (
+              <TextField
+                variant="standard"
+                {...field}
+                label="Dzień tygodnia ( textem ) "
+                fullWidth
+                placeholder="n/a"
+                required
+                error={!!errors?.day_of_week}
+                helperText={errors?.day_of_week?.message}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            )}
+          />
+        </Grid>
         <Grid item xs={12}>
           <FormControl>
             <Typography>Wybierz poziom warsztatów</Typography>
@@ -391,7 +438,24 @@ const AddEditBasicWorkshop = ({
             />
           </FormControl>
         </Grid>
-
+        <Grid item xs={12}>
+          <Controller
+            control={control}
+            name="additional_info"
+            render={({ field }) => (
+              <TextField
+                variant="standard"
+                {...field}
+                label="Wpisz dodatkowe info"
+                fullWidth
+                placeholder="n/a"
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            )}
+          />
+        </Grid>
         <Grid item xs={12}>
           <Controller
             control={control}
