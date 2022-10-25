@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { IBasicWorkshopObj, IEmailObject } from '../../ts/interfaces';
 import EmailTemplatesAutocomplete from '../email-manager/EmailTemplatesAutocomplete';
 
@@ -24,7 +24,8 @@ import DatePicker from '@mui/lab/DatePicker';
 import moment from 'moment-mini-ts';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import MultiDatePicker, { DateObject } from 'react-multi-date-picker';
-
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import AddIcon from '@mui/icons-material/Add';
 interface PageProps {
   checkForm: boolean;
   resetForm: boolean;
@@ -46,7 +47,7 @@ const defaultValues: IBasicWorkshopObj = {
   price_normal: 0,
   price_date: '',
   level: 1,
-  additional_info: '',
+  additional_info: [''],
   is_active: true
 };
 
@@ -88,6 +89,11 @@ const AddEditBasicWorkshop = ({
     defaultValues: defaultValues
   });
 
+  const additionalInfoWatcher = useWatch({
+    control,
+    name: 'additional_info'
+  });
+
   useEffect(() => {
     setValue('email_template_id', !chosenEmail ? 0 : chosenEmail.unique_id);
   }, [chosenEmail]);
@@ -107,7 +113,8 @@ const AddEditBasicWorkshop = ({
     if (!chosenWorkshop) return;
     reset({
       ...chosenWorkshop,
-      workshop_dates: JSON.parse(chosenWorkshop.workshop_dates as any)
+      workshop_dates: JSON.parse(chosenWorkshop.workshop_dates as any),
+      additional_info: JSON.parse(chosenWorkshop.additional_info as any)
     });
   }, [chosenWorkshop]);
 
@@ -438,23 +445,53 @@ const AddEditBasicWorkshop = ({
             />
           </FormControl>
         </Grid>
+
         <Grid item xs={12}>
-          <Controller
-            control={control}
-            name="additional_info"
-            render={({ field }) => (
-              <TextField
-                variant="standard"
-                {...field}
-                label="Wpisz dodatkowe info"
-                fullWidth
-                placeholder="n/a"
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-            )}
-          />
+          {additionalInfoWatcher.map((item: string, key: number) => (
+            <TextField
+              key={key}
+              sx={{ mt: 1 }}
+              variant="standard"
+              label="Wpisz dodatkowe info"
+              fullWidth
+              placeholder="n/a"
+              InputLabelProps={{
+                shrink: true
+              }}
+              value={item}
+              onChange={(e) => {
+                additionalInfoWatcher[key] = e.target.value;
+                setValue('additional_info', additionalInfoWatcher);
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        additionalInfoWatcher.splice(key, 1);
+                        setValue('additional_info', additionalInfoWatcher);
+                      }}
+                    >
+                      <RemoveCircleOutlineIcon color="error" />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          ))}
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => {
+              additionalInfoWatcher.push('');
+              setValue('additional_info', additionalInfoWatcher);
+            }}
+          >
+            <AddIcon />
+            Dodaj kolejną dodatkową inforamcje
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <Controller

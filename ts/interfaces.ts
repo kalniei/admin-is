@@ -33,7 +33,7 @@ export interface IBasicWorkshopObj {
   price_normal: number;
   price_date: string;
   level: 1 | 2 | 3 | 4;
-  additional_info: string;
+  additional_info: string[];
   is_active: boolean;
 }
 

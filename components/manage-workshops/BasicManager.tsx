@@ -57,7 +57,8 @@ const BasicManager = (): JSX.Element => {
 
     const tempData = {
       ...formData,
-      workshop_dates: JSON.stringify(formData.workshop_dates)
+      workshop_dates: JSON.stringify(formData.workshop_dates),
+      additional_info: JSON.stringify(formData.additional_info)
     };
 
     try {

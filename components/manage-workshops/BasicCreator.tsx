@@ -29,6 +29,7 @@ const BasicCreator = (): JSX.Element => {
     const tempData = {
       ...formData,
       workshop_dates: JSON.stringify(formData.workshop_dates),
+      additional_info: JSON.stringify(formData.additional_info),
       db_table_name: formData.db_table_name.includes('_warsztaty')
         ? formData.db_table_name
         : formData.db_table_name + '_warsztaty'
