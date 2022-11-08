@@ -75,7 +75,7 @@ const WorkshopsTable = ({
       field: 'date',
       headerName: 'Data',
       flex: 1,
-      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY HH:MM'),
+      valueFormatter: (params) => moment(params?.value as string).format('DD/MM/YYYY'),
       hide: !isDesktopScreen
     },
     { field: 'level', headerName: 'Poziom', flex: 0.2, editable: true, hide: !isDesktopScreen },
